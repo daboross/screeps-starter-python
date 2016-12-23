@@ -1,0 +1,113 @@
+# Compiled source #
+###################
+*.com
+*.dll
+*.exe
+*.o
+*.so
+__pycache__/
+*.py[cod]
+__javascript__/
+target/
+
+# Git #
+#######
+.git
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Build files #
+###############
+MANIFEST.MF
+dependency-reduced-pom.xml
+
+# Distribution / packaging #
+############################
+.Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs #
+##################
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Project files #
+#####################
+.ropeproject
+.mr.developer.cfg
+.project
+.pydevproject
+.classpath
+.externalToolBuilders
+.idea
+.project
+.settings
+build
+dist
+nbproject
+atlassian-ide-plugin.xml
+build.xml
+nb-configuration.xml
+*.iml
+*.ipr
+*.iws
+node_modules
+env
+.screeps-password
+.screeps-email
+
+# Misc files #
+##############
+*.bak
+*.log
+*.pot
+docs/_build/
+*\ Notes.txt
+
+# Unit test / coverage reports #
+################################
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+/config.json
+/git-cloned/
+/markdown/

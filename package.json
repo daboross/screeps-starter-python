@@ -1,0 +1,27 @@
+{
+    "name": "screeps",
+    "version": "1.0.0",
+    "description": "screeps-example-python",
+    "main": "dist/main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daboross/screeps-example-python.git"
+    },
+    "keywords": [
+        "screeps"
+    ],
+    "author": "David Ross",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/daboross/screeps-example-python/issues"
+    },
+    "homepage": "https://github.com/daboross/screeps-example-python",
+    "devDependencies": {
+        "grunt-cli": "^1.2.0",
+        "grunt": "^1.0.1",
+        "grunt-screeps": "^1.2.1"
+    }
+}
