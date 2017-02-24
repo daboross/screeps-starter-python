@@ -33,7 +33,7 @@ rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR/"
 
 cp "$SRC_DIR/__javascript__/main.js" "$DIST_DIR/"
-if [[ -e "$JS_DIR" && -e "$JS_DIR"/*.js ]]; then
+if [[ -e "$JS_DIR" ]]; then
     cp "$JS_DIR/"*.js "$DIST_DIR/"
 fi
 
