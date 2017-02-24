@@ -14,6 +14,7 @@ __pragma__('noalias', 'keys')
 __pragma__('noalias', 'get')
 __pragma__('noalias', 'set')
 __pragma__('noalias', 'type')
+__pragma__('noalias', 'update')
 
 
 def main():
