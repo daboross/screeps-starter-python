@@ -91,6 +91,7 @@ node_modules
 env
 .screeps-password
 .screeps-email
+config.json
 
 # Misc files #
 ##############

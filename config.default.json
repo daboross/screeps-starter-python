@@ -1,0 +1,6 @@
+{
+    "email": "youremail@here.com",
+    "password": "plain-text-password",
+    "branch": "default",
+    "ptr": false
+}

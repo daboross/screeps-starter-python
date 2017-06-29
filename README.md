@@ -17,10 +17,8 @@ binary to the screeps server. However, you will need to install some dependencie
 - `pip` - Make sure you have a Python 3.* version of `pip` installed as well. While `pip-3.4` is fine, you do need at
   least that in order to make a `python-3.5` virtualenv. You can check your pip version with `pip --version`, and
   depending on how it was installed, you may need to use `pip3`, `pip-3`, `pip3.4` or `pip-3.4` instead.
-- `node.js` - You'll need an up to date version of `node` and `npm` (node package manager) in order to use the `grunt`
-  script to upload transpiled code to the screeps server.
 
-After you have those set up, you'll need to install `virtualenv` and `grunt`:
+After you have those set up, you'll need to install `virtualenv`:
 
 To install virtualenv, use `pip` (or another `pip3*` / `pip-3*` command) as follows:
 
@@ -28,23 +26,14 @@ To install virtualenv, use `pip` (or another `pip3*` / `pip-3*` command) as foll
 pip install --user virtualenv
 ```
 
-To install grunt, use `npm` as follows:
 
-```
-npm install -g grunt-cli
-```
-If you have a system version of `npm`, you may need to do the following instead:
-```
-npm install --user -g grunt-cli
-```
+After that, the rest of the dependencies will be installed upon running `build.py` for the first time.
 
-After that, the rest of the dependencies will be installed upon running `build.sh` for the first time.
+The only remaining step will be to provide your screeps credentials. To do that, copy `config.default.json` to
+a new file `config.json`, and enter your email and password into the config.
 
-The only remaining step will be to provide your screeps credentials. To do that, put your log in email into a file
-called `.screeps-email` in this project directory, and your password into a file called `.screeps-password`.
-
-Following that, you're all set up! All you need to do now is run the `./build.sh` script whenever you want to compile
-and deploy code, and it will deal with the rest of it.
+Following that, you're all set up! All you need to do now is run `python build.py` to compile, collect and deploy your
+code.
 
 #### Transcrypt vs. Python:
 
