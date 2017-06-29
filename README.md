@@ -32,7 +32,7 @@ After that, the rest of the dependencies will be installed upon running `build.p
 The only remaining step will be to provide your screeps credentials. To do that, copy `config.default.json` to
 a new file `config.json`, and enter your email and password into the config.
 
-Following that, you're all set up! All you need to do now is run `python build.py` to compile, collect and deploy your
+Following that, you're all set up! All you need to do now is run `python3 build.py` to compile, collect and deploy your
 code.
 
 #### Transcrypt vs. Python:
