@@ -32,6 +32,16 @@ class Configuration:
         self.password = config_json['password']
         self.branch = config_json.get('branch', 'default')
         self.ptr = config_json.get('ptr', False)
+        self.enter_env = config_json.get('enter-env', True)
+
+    def transcrypt_executable(self):
+        """
+        :rtype: str
+        """
+        if self.enter_env:
+            return os.path.join(self.base_dir, 'env', 'bin', 'transcrypt')
+        else:
+            return shutil.which('transcrypt')
 
 
 def load_config(base_dir):
@@ -51,12 +61,13 @@ def run_transcrypt(config):
     """
     :type config: Configuration
     """
-    transcrypt_executable = os.path.join(config.base_dir, 'env', 'bin', 'transcrypt')
+    transcrypt_executable = config.transcrypt_executable()
     source_main = os.path.join(config.base_dir, 'src', 'main.py')
 
     args = [transcrypt_executable] + transcrypt_arguments + [source_main]
     source_dir = os.path.join(config.base_dir, 'src')
 
+    print("running `{}` in `{}`".format(args, source_dir))
     ret = subprocess.Popen(args, cwd=source_dir).wait()
 
     if ret != 0:
@@ -148,31 +159,50 @@ def install_env(config):
     """
     :type config: Configuration
     """
-    env_dir = os.path.join(config.base_dir, 'env')
+    if config.enter_env:
+        env_dir = os.path.join(config.base_dir, 'env')
 
-    if not os.path.exists(env_dir):
-        print("creating virtualenv environment...")
-        if sys.version_info >= (3, 5):
-            args = ['virtualenv', '--system-site-packages', env_dir]
-        else:
-            args = ['virtualenv', '-p', 'python3.5', '--system-site-packages', env_dir]
+        if not os.path.exists(env_dir):
+            print("creating virtualenv environment...")
+            if sys.version_info >= (3, 5):
+                args = ['virtualenv', '--system-site-packages', env_dir]
+            else:
+                args = ['virtualenv', '-p', 'python3.5', '--system-site-packages', env_dir]
 
-        ret = subprocess.Popen(args, cwd=config.base_dir).wait()
+            ret = subprocess.Popen(args, cwd=config.base_dir).wait()
 
-        if ret != 0:
-            raise Exception("virtualenv failed with exit code {}".format(ret))
+            if ret != 0:
+                raise Exception("virtualenv failed with exit code {}".format(ret))
 
-    if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')):
-        print("installing transcrypt into env...")
+        if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')):
+            print("installing transcrypt into env...")
 
-        requirements_file = os.path.join(config.base_dir, 'requirements.txt')
+            requirements_file = os.path.join(config.base_dir, 'requirements.txt')
 
-        install_args = [os.path.join(env_dir, 'bin', 'pip'), 'install', '-r', requirements_file]
+            install_args = [os.path.join(env_dir, 'bin', 'pip'), 'install', '-r', requirements_file]
 
-        ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
+            ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
 
-        if ret != 0:
-            raise Exception("pip install failed with exit code {}".format(ret))
+            if ret != 0:
+                raise Exception("pip install failed with exit code {}".format(ret))
+
+    else:
+        if not shutil.which('transcrypt'):
+            print("installing transcrypt using 'pip'...")
+
+            requirements_file = os.path.join(config.base_dir, 'requirements.txt')
+
+            pip_file = shutil.which('pip')
+
+            if not pip_file:
+                raise Exception("could not find 'pip' instillation")
+
+            install_args = [pip_file, 'install', '-r', requirements_file]
+
+            ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
+
+            if ret != 0:
+                raise Exception("pip install failed with exit code {}".format(ret))
 
 
 def main():
