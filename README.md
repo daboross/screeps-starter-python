@@ -9,7 +9,7 @@ While code uploaded to the server must be in JavaScript, this repository is writ
 This repository is intended as a base to be used for building more complex AIs, and has all the tooling needed to
 transpile Python into JavaScript set up.
 
-The `./build.sh` script does the majority of the work, from setting up a new environment to building/publishing the
+The `./build.py` script does the majority of the work, from setting up a new environment to building/publishing the
 binary to the screeps server. However, you will need to install some dependencies:
 
 - `python-3.5` - Transcrypt works natively with Python 3.5, so you will need this version installed. Python 3.4 is more
