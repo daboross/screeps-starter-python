@@ -13,8 +13,42 @@ import shutil
 transcrypt_arguments = ['-n', '-b', '-p', '.none']
 
 
+def possible_transcrypt_binary_paths(config):
+    """
+    Finds all different places to look for a `transcrypt` binary to run.
+
+    :type config: Configuration
+    """
+    return [
+        os.path.join(config.base_dir, 'env', 'bin', 'transcrypt'),
+        os.path.join(config.base_dir, 'env', 'bin', 'transcrypt.exe'),
+        shutil.which('transcrypt'),
+        shutil.which('transcrypt.exe'),
+    ]
+
+
+def possible_pip_binary_paths(config):
+    """
+    Finds all different places to look for a `pip` binary to run.
+
+    :type config: Configuration
+    """
+    files = [
+        os.path.join(config.base_dir, 'env', 'bin', 'pip'),
+        os.path.join(config.base_dir, 'env', 'bin', 'pip.exe'),
+    ]
+    if not config.enter_env:
+        for path in [shutil.which('pip'), shutil.which('pip.exe')]:
+            if path is not None:
+                files.append(path)
+
+    return files
+
+
 class Configuration:
     """
+    Utility struct holding all configuration values.
+
     :type base_dir: str
     :type username: str
     :type password: str
@@ -36,16 +70,31 @@ class Configuration:
 
     def transcrypt_executable(self):
         """
+        Utility method to find a transcrypt executable file.
+
         :rtype: str
         """
-        if self.enter_env:
-            return os.path.join(self.base_dir, 'env', 'bin', 'transcrypt')
-        else:
-            return shutil.which('transcrypt')
+        for path in possible_transcrypt_binary_paths(self):
+            if path is not None and os.path.exists(path):
+                return path
+        return None
+
+    def pip_executable(self):
+        """
+        Utility method to find a pip executable file.
+
+        :rtype: str
+        """
+        for path in possible_pip_binary_paths(self):
+            if path is not None and os.path.exists(path):
+                return path
+        return None
 
 
 def load_config(base_dir):
     """
+    Loads the configuration from the `config.json` file.
+
     :type base_dir: str
     :rtype: Configuration
     """
@@ -59,6 +108,8 @@ def load_config(base_dir):
 
 def run_transcrypt(config):
     """
+    Compiles source code using the `transcrypt` program.
+
     :type config: Configuration
     """
     transcrypt_executable = config.transcrypt_executable()
@@ -67,15 +118,17 @@ def run_transcrypt(config):
     args = [transcrypt_executable] + transcrypt_arguments + [source_main]
     source_dir = os.path.join(config.base_dir, 'src')
 
-    print("running `{}` in `{}`".format(args, source_dir))
     ret = subprocess.Popen(args, cwd=source_dir).wait()
 
     if ret != 0:
-        raise Exception("transcrypt failed with exit code {}".format(ret))
+        raise Exception("transcrypt failed. exit code: {}. command line '{}'. working dir: '{}'."
+                        .format(ret, "' '".join(args), source_dir))
 
 
 def copy_artifacts(config):
     """
+    Copies compiled JavaScript files to output directory after `transcrypt` has been run.
+
     :type config: Configuration
     """
     dist_directory = os.path.join(config.base_dir, 'dist')
@@ -103,6 +156,8 @@ def copy_artifacts(config):
 
 def build(config):
     """
+    Compiles source code, and copies JavaScript files to output directory.
+
     :type config: Configuration
     """
     print("running transcrypt...")
@@ -114,6 +169,8 @@ def build(config):
 
 def upload(config):
     """
+    Uploads JavaScript files found in the output directory to the Screeps server.
+
     :type config: Configuration
     """
 
@@ -157,8 +214,15 @@ def upload(config):
 
 def install_env(config):
     """
+    Creates a virtualenv environment in the `env/` folder, and attempts to install `transcrypt` into it.
+
+    If `enter-env` is False in the `config.json` file, this will instead install `transcrypt`
+    into the default location for the `pip` binary which is in the path.
+
     :type config: Configuration
     """
+    if config.transcrypt_executable() is not None:
+        return
     if config.enter_env:
         env_dir = os.path.join(config.base_dir, 'env')
 
@@ -172,19 +236,26 @@ def install_env(config):
             ret = subprocess.Popen(args, cwd=config.base_dir).wait()
 
             if ret != 0:
-                raise Exception("virtualenv failed with exit code {}".format(ret))
+                raise Exception("virtualenv failed. exit code: {}. command line '{}'. working dir: '{}'."
+                                .format(ret, "' '".join(args), config.base_dir))
 
         if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')):
             print("installing transcrypt into env...")
 
             requirements_file = os.path.join(config.base_dir, 'requirements.txt')
 
-            install_args = [os.path.join(env_dir, 'bin', 'pip'), 'install', '-r', requirements_file]
+            pip_executable = config.pip_executable()
+
+            if not pip_executable:
+                raise Exception("pip binary not found at any of {}".format(possible_pip_binary_paths(config)))
+
+            install_args = [pip_executable, 'install', '-r', requirements_file]
 
             ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
 
             if ret != 0:
-                raise Exception("pip install failed with exit code {}".format(ret))
+                raise Exception("pip install failed. exit code: {}. command line '{}'. working dir: '{}'."
+                                .format(ret, "' '".join(install_args), config.base_dir))
 
     else:
         if not shutil.which('transcrypt'):
@@ -192,17 +263,18 @@ def install_env(config):
 
             requirements_file = os.path.join(config.base_dir, 'requirements.txt')
 
-            pip_file = shutil.which('pip')
+            pip_executable = config.pip_executable()
 
-            if not pip_file:
-                raise Exception("could not find 'pip' instillation")
+            if not pip_executable:
+                raise Exception("pip binary not found at any of {}".format(possible_pip_binary_paths(config)))
 
-            install_args = [pip_file, 'install', '-r', requirements_file]
+            install_args = [pip_executable, 'install', '-r', requirements_file]
 
             ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
 
             if ret != 0:
-                raise Exception("pip install failed with exit code {}".format(ret))
+                raise Exception("pip install failed. exit code: {}. command line '{}'. working dir: '{}'."
+                                .format(ret, "' '".join(install_args), config.base_dir))
 
 
 def main():
