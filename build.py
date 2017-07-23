@@ -21,7 +21,7 @@ def possible_transcrypt_binary_paths(config):
     """
     return [
         os.path.join(config.base_dir, 'env', 'bin', 'transcrypt'),
-        os.path.join(config.base_dir, 'env', 'bin', 'transcrypt.exe'),
+        os.path.join(config.base_dir, 'env', 'Scripts', 'transcrypt.exe'),
         shutil.which('transcrypt'),
         shutil.which('transcrypt.exe'),
     ]
