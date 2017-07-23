@@ -56,6 +56,10 @@ class Math:
     def random() -> float:
         pass
 
+    @staticmethod
+    def floor(x: Union[int, float]) -> int:
+        pass
+
 
 # noinspection PyUnusedLocal
 def typeof(x: Any) -> str:

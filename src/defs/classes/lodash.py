@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, Union, Type
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, TypeVar, Union
 
 _L1 = TypeVar('_L1')
 _L2 = TypeVar('_L2')
@@ -235,6 +235,9 @@ class _LodashChain:
         pass
 
     def values(self) -> '_LodashChain':
+        pass
+
+    def value(self) -> Any:
         pass
 
 

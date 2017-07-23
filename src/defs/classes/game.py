@@ -219,3 +219,25 @@ class Game:
     @classmethod
     def notify(cls, message: str, groupInterval: int = 0):
         pass
+
+
+class _PathFinderResult:
+    """
+    :type path: List[RoomPosition]
+    :type ops: int
+    :type cost: int
+    :type incomplete: bool
+    """
+
+    def __init__(self, path: List[RoomPosition], ops: int, cost: int, incomplete: bool):
+        self.path = path
+        self.ops = ops
+        self.cost = cost
+        self.incomplete = incomplete
+
+
+class PathFinder:
+    @staticmethod
+    def search(origin: RoomPosition, goal: Union[Dict[str, Any], List[Dict[str, Any]]],
+               opts: Optional[Dict[str, Any]] = None) -> _PathFinderResult:
+        pass

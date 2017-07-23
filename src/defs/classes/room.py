@@ -1,5 +1,6 @@
 from typing import Any, Callable, Dict, List, Optional, Type, Union
 
+from .memory import _Memory
 from .misc_obj import RoomObject
 from .structures import StructureController, StructureStorage, StructureTerminal
 
@@ -93,20 +94,20 @@ class _PathPos:
 # noinspection PyPep8Naming
 class Room:
     """
-    :type controller: StructureController
-    :type storage: StructureStorage
-    :type terminal: StructureTerminal
+    :type controller: Optional[StructureController]
+    :type storage: Optional[StructureStorage]
+    :type terminal: Optional[StructureTerminal]
     :type energyAvailable: int
     :type energyCapacityAvailable: int
-    :type memory: Dict[str, Any]
+    :type memory: _Memory
     :type mode: str
     :type name: str
     :type visual: Any
     """
 
-    def __init__(self, controller: StructureController, storage: StructureStorage, terminal: StructureTerminal,
-                 energyAvailable: int, energyCapacityAvailable: int, memory: Dict[str, Any], mode: str,
-                 name: str, visual: Any) -> None:
+    def __init__(self, controller: Optional[StructureController], storage: Optional[StructureStorage],
+                 terminal: Optional[StructureTerminal], energyAvailable: int, energyCapacityAvailable: int,
+                 memory: _Memory, mode: str, name: str, visual: Any) -> None:
         self.controller = controller
         self.storage = storage
         self.terminal = terminal
@@ -157,5 +158,5 @@ class Room:
         pass
 
     def lookForAtArea(self, _type: str, top: int, left: int, bottom: int, right: int, asArray: bool = False) \
-            -> Union[List[Dict[str, Any]], Dict[int, Dict[int, Dict[str, Any]]]]:
+            -> Union[List[Dict[str, RoomObject]], Dict[int, Dict[int, Dict[str, RoomObject]]]]:
         pass

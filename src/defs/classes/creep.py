@@ -1,13 +1,10 @@
-from typing import Optional, List, Dict, Union, Any
+from typing import Any, Dict, List, Optional, Union
 
-from .game import Game
-from .lodash import _
-from .memory import Memory, RawMemory, _Memory
-from .misc_obj import Flag, Mineral, Resource, RoomObject, Source
-from .other_js import Infinity, JSON, Math, Object, RegExp, module, require, this, typeof, undefined
+from .memory import _Memory
+from .misc_obj import Mineral, Resource, RoomObject, Source
 from .room import Room, RoomPosition, _Owner
-from .structures import ConstructionSite, OwnedStructure, Structure, StructureController, StructureSpawn, \
-    StructureStorage, StructureTerminal
+from .structures import ConstructionSite, Structure, StructureController
+
 
 class _CreepPart:
     """
