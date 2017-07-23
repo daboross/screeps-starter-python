@@ -357,7 +357,7 @@ __all__ = [
     'StructureExtension', 'StructureExtractor', 'StructureKeeperLair', 'StructureLab', 'StructureLink',
     'StructureNuker', 'StructureObserver', 'StructurePortal', 'StructurePowerBank', 'StructurePowerSpawn',
     'StructureRampart', 'StructureRoad', 'StructureSpawn', 'StructureStorage', 'StructureTerminal', 'StructureTower',
-    'StructureWall'
+    'StructureWall',
 
     # transcrypt
     "__pragma__",
