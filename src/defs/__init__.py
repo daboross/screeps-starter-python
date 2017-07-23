@@ -1,9 +1,8 @@
 # noinspection PyUnboundLocalVariable,PyUnresolvedReferences
 __pragma__('skip')
 
+from .classes import *
 from .constants import *
-from .metadata import *
-from .misc_exports import *
 from .transcrypt import *
 
 # Generated manually using regexes on the sub files
@@ -37,7 +36,6 @@ __all__ = [
     "FIND_HOSTILE_CREEPS",
     "FIND_SOURCES_ACTIVE",
     "FIND_SOURCES",
-    "FIND_DROPPED_ENERGY",
     "FIND_DROPPED_RESOURCES",
     "FIND_STRUCTURES",
     "FIND_MY_STRUCTURES",
@@ -351,40 +349,29 @@ __all__ = [
 
     "COLORS_ALL",
 
-    # misc_exports
-    "Creep",
-    "Game",
-    "Memory",
-    "Room",
-    "Flag",
-    "RoomPosition",
-    "PathFinder",
-    "Object",
-    "Math",
+    # classes
+    'Creep', 'Game', '_', 'Memory', 'RawMemory', 'Flag', 'Mineral', 'Resource', 'RoomObject', 'Source',
+    'Infinity', 'JSON', 'Math', 'Object', 'RegExp', 'module', 'require', 'this', 'typeof', 'undefined',
+    'Room', 'RoomPosition',
+    'ConstructionSite', 'OwnedStructure', 'Structure', 'StructureContainer', 'StructureController',
+    'StructureExtension', 'StructureExtractor', 'StructureKeeperLair', 'StructureLab', 'StructureLink',
+    'StructureNuker', 'StructureObserver', 'StructurePortal', 'StructurePowerBank', 'StructurePowerSpawn',
+    'StructureRampart', 'StructureRoad', 'StructureSpawn', 'StructureStorage', 'StructureTerminal', 'StructureTower',
+    'StructureWall'
 
-    "typeof",
-    "require",
-    "module",
-    "JSON",
-    "this",
-    "RegExp",
-    "Array",
-    "Error",
-    "Infinity",
-    "console",
-    "undefined",
-    "Map",
-    "Set",
-    "String",
-    "isFinite",
-    "_",
-
-    # js_exports
+    # transcrypt
     "__pragma__",
     "__new__",
     "js_isNaN",
     'js_global',
     "__except0__",
+
+    # metadata
+    "StoredObstacleType",
+    "StoredEnemyRoomState",
+    "StoredObstacle",
+    "StoredEnemyRoomOwner",
+    "StoredRoom",
 ]
 
 __pragma__('noskip')

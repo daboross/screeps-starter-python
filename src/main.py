@@ -1,8 +1,8 @@
 import harvester
-# screeps_constants is a file which claims to export all constants and some JavaScript objects, but in reality does
+# defs is a package which claims to export all constants and some JavaScript objects, but in reality does
 #  nothing. This is useful mainly when using an editor like PyCharm, so that it 'knows' that things like Object, Creep,
 #  Game, etc. do exist.
-from screeps_constants import *
+from defs import *
 
 # These are currently required for Transcrypt in order to use the following names in JavaScript.
 # Without the 'noalias' pragma, each of the following would be translated into something like 'py_Infinity' or
