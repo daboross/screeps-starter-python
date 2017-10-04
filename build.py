@@ -261,7 +261,8 @@ def install_env(config):
                 raise Exception("virtualenv failed. exit code: {}. command line '{}'. working dir: '{}'."
                                 .format(ret, "' '".join(args), config.base_dir))
 
-        if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')):
+        if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')) and not os.path.exists(
+                os.path.join(env_dir, 'scripts', 'transcrypt.exe')):
             print("installing transcrypt into env...")
 
             requirements_file = os.path.join(config.base_dir, 'requirements.txt')
