@@ -1,6 +1,7 @@
 # noinspection PyPep8Naming
-from typing import Any, Dict, Optional, Union
+from typing import Optional, Type, Union
 
+from .memory import _Memory
 from .room import Room, RoomPosition
 
 
@@ -21,12 +22,13 @@ class Flag(RoomObject):
     :type room: Room | None
     :type color: int
     :type secondaryColor: int
-    :type memory: dict[str, Any]
+    :type memory: _Memory
     :type name: str
     """
+    prototype = None  # type: Type[Flag]
 
     def __init__(self, pos: RoomPosition, room: Optional[Room], color: int, secondaryColor: int,
-                 memory: Dict[str, Any], name: str) -> None:
+                 memory: _Memory, name: str) -> None:
         super().__init__(pos, room)
         self.color = color
         self.secondaryColor = secondaryColor
@@ -41,6 +43,13 @@ class Flag(RoomObject):
 
     def setPosition(self, x: Union[int, RoomPosition, RoomObject], y: int = None) -> int:
         pass
+
+    @property
+    def hint(self) -> int:
+        return 0
+
+
+Flag.prototype = Flag
 
 
 # noinspection PyPep8Naming
@@ -72,15 +81,16 @@ class Mineral(RoomObject):
     """
 
     def __init__(self, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
-                 id: str, ticksToRegeneration: int) -> None:
+                 _id: str, ticksToRegeneration: int) -> None:
         super().__init__(pos, room)
         self.density = density
         self.mineralAmount = mineralAmount
         self.mineralType = mineralType
-        self.id = id
+        self.id = _id
         self.ticksToRegeneration = ticksToRegeneration
 
 
+# noinspection PyPep8Naming
 class Resource(RoomObject):
     """
     :type amount: int

@@ -1,28 +1,23 @@
-from typing import Any, TypeVar, Union
+from typing import Any, Union, TypeVar
 
 T = TypeVar('T')
-
-
-# noinspection PyUnusedLocal
-def __pragma__(arg1: str, arg2: Any = None, arg3: Any = None) -> Any:
-    pass
-
 
 def __new__(arg: T) -> T:
     return arg
 
 
-def js_isNaN(num: Union[float, int]) -> bool:
-    return num != float('nan')
+# noinspection PyPep8Naming
+def js_isNaN(num: Union[float, int, str]) -> bool:
+    return float(num) != float('nan')
 
 
 js_global = None  # type: Any
 
+__except0__ = None  # type: Exception
+
 __all__ = [
-    '__pragma__',
     '__new__',
     'js_isNaN',
     'js_global',
+    '__except0__',
 ]
-
-__except0__ = None  # type: Exception

@@ -16,12 +16,15 @@ A few notes:
   typed with `:type x: y` style types, for editors such as PyCharm which do not fully use annotations
   for type hinting.
 """
+from typing import TYPE_CHECKING
 
-# noinspection PyUnboundLocalVariable,PyUnresolvedReferences
+if TYPE_CHECKING:
+    from transcrypt.modules.org.transcrypt.stubs.browser import __pragma__
+
 __pragma__('skip')
 
-from .classes import *
 from .constants import *
+from .classes import *
 from .transcrypt import *
 
 # Generated manually using regexes on the sub files
@@ -369,28 +372,23 @@ __all__ = [
     "COLORS_ALL",
 
     # classes
-    'Creep', 'Game', 'PathFinder', '_', 'Memory', 'RawMemory', 'Flag', 'Mineral', 'Resource', 'RoomObject', 'Source',
-    'Infinity', 'JSON', 'Math', 'Object', 'RegExp', 'module', 'require', 'this', 'typeof', 'undefined',
-    'Room', 'RoomPosition',
+    'Creep', 'Game', 'PathFinder', '_', 'Memory', 'RawMemory', '_Memory', '_MemoryValue', 'Flag', 'Mineral', 'Resource',
+    'RoomObject', 'Source', 'Infinity', 'JSON', 'Map', 'Set', 'Math', 'Object', 'RegExp', 'module', 'require', 'this',
+    'typeof', 'undefined', 'Room', 'RoomPosition', '_PathPos', 'String', 'Array', 'console',
     'ConstructionSite', 'OwnedStructure', 'Structure', 'StructureContainer', 'StructureController',
     'StructureExtension', 'StructureExtractor', 'StructureKeeperLair', 'StructureLab', 'StructureLink',
     'StructureNuker', 'StructureObserver', 'StructurePortal', 'StructurePowerBank', 'StructurePowerSpawn',
     'StructureRampart', 'StructureRoad', 'StructureSpawn', 'StructureStorage', 'StructureTerminal', 'StructureTower',
     'StructureWall',
 
-    # transcrypt
+    # misc
     "__pragma__",
+
+    # transcrypt
     "__new__",
     "js_isNaN",
     'js_global',
     "__except0__",
-
-    # metadata
-    "StoredObstacleType",
-    "StoredEnemyRoomState",
-    "StoredObstacle",
-    "StoredEnemyRoomOwner",
-    "StoredRoom",
 ]
 
 __pragma__('noskip')

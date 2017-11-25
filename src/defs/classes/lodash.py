@@ -1,50 +1,54 @@
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar, Union
 
 _L1 = TypeVar('_L1')
 _L2 = TypeVar('_L2')
 _L3 = TypeVar('_L3', int, float)
-
-_LodashPredicate = Union[Dict[str, Any], Callable[[_L1], bool], None]
-_LodashIteratee = Union[str, Callable[[_L1], _L2], None]
-_Collection = Union[List[_L1], Dict[str, _L1]]
+_L4 = TypeVar('_L4')
 
 
 # noinspection PyPep8Naming
-class _LodashChain:
-    def __init__(self, value):
+class _LodashChain(Generic[_L1]):
+    def __init__(self, value: Union[List[_L1], Dict[Any, _L1]]) -> None:
         self.__inner = value
 
-    def chunk(self, size: int = 1) -> '_LodashChain':
+    def concat(self, other: Union[List[_L1], Dict[Any, _L1]]) -> '_LodashChain[_L1]':
         pass
 
-    def compact(self) -> '_LodashChain':
+    def chunk(self, size: int = 1) -> '_LodashChain[List[_L1]]':
         pass
 
-    def difference(self, *other: List[_L1]) -> '_LodashChain':
+    def compact(self) -> '_LodashChain[_L1]':
         pass
 
-    def drop(self, n: int = 1) -> '_LodashChain':
+    def difference(self, *other: List[_L1]) -> '_LodashChain[_L1]':
         pass
 
-    def dropRight(self, n: int = 1) -> '_LodashChain':
+    def drop(self, n: int = 1) -> '_LodashChain[_L1]':
         pass
 
-    def dropRightWhile(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> '_LodashChain':
+    def dropRight(self, n: int = 1) -> '_LodashChain[_L1]':
         pass
 
-    def dropWhile(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> '_LodashChain':
+    def dropRightWhile(self,
+                       predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                       thisArg: Any = None) -> '_LodashChain[_L1]':
         pass
 
-    def fill(self, value: _L1, start: int = 0, end: int = 0) -> '_LodashChain':
+    def dropWhile(self,
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> '_LodashChain[_L1]':
+        pass
+
+    def fill(self, value: _L1, start: int = 0, end: int = 0) -> '_LodashChain[_L1]':
         pass
 
     def first(self) -> Optional[_L1]:
         pass
 
-    def flatten(array: List[List[_L1]]) -> '_LodashChain':
+    def flatten(self) -> '_LodashChain':
         pass
 
-    def flattenDeep(array: List[Any]) -> '_LodashChain':
+    def flattenDeep(self) -> '_LodashChain':
         pass
 
     def initial(self) -> List[_L1]:
@@ -65,7 +69,8 @@ class _LodashChain:
     def pullAt(self, indices: List[int]) -> '_LodashChain':
         pass
 
-    def remove(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> '_LodashChain':
+    def remove(self, predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> '_LodashChain':
         pass
 
     def rest(self) -> '_LodashChain':
@@ -74,10 +79,16 @@ class _LodashChain:
     def slice(self, start: int = 0, end: int = 0) -> '_LodashChain':
         pass
 
-    def sortedIndex(self, value: _L1, iteratee: _LodashIteratee = None, thisArg: Any = None) -> int:
+    def sortedIndex(self,
+                    value: _L1,
+                    iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                    thisArg: Any = None) -> int:
         pass
 
-    def sortedLastIndex(self, value: _L1, iteratee: _LodashIteratee = None, thisArg: Any = None) -> int:
+    def sortedLastIndex(self,
+                        value: _L1,
+                        iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                        thisArg: Any = None) -> int:
         pass
 
     def take(self, n: int = 1) -> '_LodashChain':
@@ -86,22 +97,36 @@ class _LodashChain:
     def takeRight(self, n: int = 1) -> '_LodashChain':
         pass
 
-    def takeRightWhile(self, predicate: _LodashIteratee = None, thisArg: Any = None) -> '_LodashChain':
+    def takeRightWhile(self,
+                       predicate: Union[str, Callable[[_L1], _L2], None] = None,
+                       thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def takeWhile(self, predicate: _LodashIteratee = None, thisArg: Any = None) -> '_LodashChain':
+    def takeWhile(self,
+                  predicate: Union[str, Callable[[_L1], _L2], None] = None,
+                  thisArg: Any = None) -> '_LodashChain':
         pass
 
     def union(self, arrays: List[List[_L1]]) -> '_LodashChain':
         pass
 
-    def uniq(self, isSorted: bool = False, iteratee: _LodashIteratee = None, thisArg: Any = None):
+    def unique(self,
+               isSorted: bool = False,
+               iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+               thisArg: Any = None) -> List[_L1]:
+        pass
+
+    def uniq(self,
+             isSorted: bool = False,
+             iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+             thisArg: Any = None) -> List[_L1]:
         pass
 
     def unzip(self) -> '_LodashChain':
         pass
 
-    def unzipWith(self, iteratee: Optional[Callable[[Any, Any, Any, Any]]] = None,
+    def unzipWith(self,
+                  iteratee: Optional[Callable[[Any, Any, Any, Any], Any]] = None,
                   thisArg: Any = None) -> '_LodashChain':
         pass
 
@@ -117,73 +142,94 @@ class _LodashChain:
     def zipObject(self, values: Optional[List[Any]] = None) -> '_LodashChain':
         pass
 
-    def zipWith(self, iteratee: Optional[Callable[[Any, Any, Any, Any]]] = None, thisArg: Any = None) -> '_LodashChain':
+    def zipWith(self,
+                iteratee: Optional[Callable[[Any, Any, Any, Any], None]] = None,
+                thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def all(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def all(self, predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+            thisArg: Any = None) -> bool:
         pass
 
-    def any(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def any(self, predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+            thisArg: Any = None) -> bool:
         pass
 
     def at(self, *props: Any) -> List[_L1]:
         pass
 
-    def countBy(self, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[_L2, int]:
+    def countBy(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def every(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def every(self,
+              predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+              thisArg: Any = None) -> bool:
         pass
 
-    def filter(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def filter(self,
+               predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> '_LodashChain[_L1]':
         pass
 
-    def find(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def find(self,
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+             thisArg: Any = None) -> _L1:
         pass
 
-    def findLast(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def findLast(self,
+                 predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                 thisArg: Any = None) -> _L1:
         pass
 
-    def findWhere(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def findWhere(self,
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> _L1:
         pass
 
-    def forEach(self, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def forEach(self, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None) -> '_LodashChain[_L1]':
         pass
 
-    def forEachRight(self, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def forEachRight(self,
+                     iteratee: Callable[[_L1], Optional[bool]] = None,
+                     thisArg: Any = None) -> '_LodashChain[_L1]':
         pass
 
-    def groupBy(self, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[_L2, List[_L1]]:
+    def groupBy(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
     def includes(self, value: _L1, fromIndex: int = 0) -> bool:
         pass
 
-    def indexBy(self, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[str, _L1]:
+    def indexBy(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> Dict[str, _L1]:
         pass
 
     def invoke(self, path: str, *args: Any) -> '_LodashChain':
         pass
 
-    def map(self, iteratee: _LodashIteratee = None, thisArg: Any = None) -> '_LodashChain':
+    def map(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def partition(self, predicate: _LodashPredicate = None, thisArg: Any = None) \
-            -> '_LodashChain':
+    def partition(self,
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> '_LodashChain':
         pass
 
     def pluck(self, path: Union[str, List[str]]) -> '_LodashChain':
         pass
 
-    def reduce(self, iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
+    def reduce(self,
+               iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
                thisArg: Any = None) -> _L2:
         pass
 
-    def reduceRight(self, iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
+    def reduceRight(self,
+                    iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
                     thisArg: Any = None) -> _L2:
         pass
 
-    def reject(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> '_LodashChain':
+    def reject(self,
+               predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> '_LodashChain':
         pass
 
     def sample(self) -> Any:
@@ -195,40 +241,44 @@ class _LodashChain:
     def size(self) -> int:
         pass
 
-    def some(self, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def some(self,
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+             thisArg: Any = None) -> bool:
         pass
 
-    def sortBy(self, iteratee: _LodashIteratee = None, thisArg: Any = None) -> '_LodashChain':
+    def sortBy(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def sortByAll(self, *iteratee: _LodashIteratee) -> '_LodashChain':
+    def sortByAll(self, *iteratee: Union[str, Callable[[_L1], _L2], None]) -> '_LodashChain':
         pass
 
-    def sortByOrder(self, iteratees: List[_LodashIteratee], orders: List[str]) -> '_LodashChain':
+    def sortByOrder(self, iteratees: List[Union[str, Callable[[_L1], _L2], None]], orders: List[str]) -> '_LodashChain':
         pass
 
     def where(self, source: Any) -> '_LodashChain':
         pass
 
-    def toArray(value: Any) -> '_LodashChain':
+    def toArray(self) -> '_LodashChain':
         pass
 
-    def toPlainObject(value: Any) -> '_LodashChain':
+    def toPlainObject(self) -> '_LodashChain':
         pass
 
-    def sum(self, iteratee: Callable[[_L1], _L3] = lambda x: x, thisArg: Any = None) -> '_LodashChain':
+    def sum(self, iteratee: Union[str, Callable[[_L1], _L2], None] = None, thisArg: Any = None) -> _L2:
         pass
 
-    def keys(_object: Any) -> '_LodashChain':
+    def keys(self) -> '_LodashChain':
         pass
 
-    def mapKeys(_object: Any, iteratee: Callable[[str], str] = None, thisArg: Any = None) -> '_LodashChain':
+    def mapKeys(self, iteratee: Callable[[str], str] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
     def mapValues(self, iteratee: Callable[[Any], Any] = None, thisArg: Any = None) -> '_LodashChain':
         pass
 
-    def omit(self, predicate: _LodashPredicate, thisArg: Any = None) -> '_LodashChain':
+    def omit(self,
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str],
+             thisArg: Any = None) -> '_LodashChain':
         pass
 
     def pairs(self) -> '_LodashChain':
@@ -240,10 +290,16 @@ class _LodashChain:
     def value(self) -> Any:
         pass
 
+    def max(self, iteratee: Callable[[_L1], _L3] = None, thisArg: Any = None) -> _L1:
+        pass
+
+    def min(self, iteratee: Callable[[_L1], _L3] = None, thisArg: Any = None) -> _L1:
+        pass
+
 
 # noinspection PyPep8Naming
 class _:
-    def __new__(cls, value) -> _LodashChain:
+    def __new__(cls, value: Union[List[_L1], Dict[Any, _L1]]) -> _LodashChain[_L1]:
         return _LodashChain(value)
 
     @staticmethod
@@ -267,11 +323,15 @@ class _:
         pass
 
     @staticmethod
-    def dropRightWhile(array: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def dropRightWhile(array: List[_L1],
+                       predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                       thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
-    def dropWhile(array: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def dropWhile(array: List[_L1],
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
@@ -279,11 +339,15 @@ class _:
         pass
 
     @staticmethod
-    def findIndex(array: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> int:
+    def findIndex(array: List[_L1],
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> int:
         pass
 
     @staticmethod
-    def findLastIndex(array: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> int:
+    def findLastIndex(array: List[_L1],
+                      predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                      thisArg: Any = None) -> int:
         pass
 
     @staticmethod
@@ -319,7 +383,7 @@ class _:
         pass
 
     @staticmethod
-    def pull(array: List[_L1], values: List[_L1]) -> List[_L1]:
+    def pull(array: List[_L1], *values: _L1) -> List[_L1]:
         pass
 
     @staticmethod
@@ -327,7 +391,9 @@ class _:
         pass
 
     @staticmethod
-    def remove(array: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def remove(array: List[_L1],
+               predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
@@ -339,11 +405,17 @@ class _:
         pass
 
     @staticmethod
-    def sortedIndex(array: List[_L1], value: _L1, iteratee: _LodashIteratee = None, thisArg: Any = None) -> int:
+    def sortedIndex(array: List[_L1],
+                    value: _L1,
+                    iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                    thisArg: Any = None) -> int:
         pass
 
     @staticmethod
-    def sortedLastIndex(array: List[_L1], value: _L1, iteratee: _LodashIteratee = None, thisArg: Any = None) -> int:
+    def sortedLastIndex(array: List[_L1],
+                        value: _L1,
+                        iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                        thisArg: Any = None) -> int:
         pass
 
     @staticmethod
@@ -355,11 +427,15 @@ class _:
         pass
 
     @staticmethod
-    def takeRightWhile(array: List[_L1], predicate: _LodashIteratee = None, thisArg: Any = None) -> List[_L1]:
+    def takeRightWhile(array: List[_L1],
+                       predicate: Union[str, Callable[[_L1], _L2], None] = None,
+                       thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
-    def takeWhile(array: List[_L1], predicate: _LodashIteratee = None, thisArg: Any = None) -> List[_L1]:
+    def takeWhile(array: List[_L1],
+                  predicate: Union[str, Callable[[_L1], _L2], None] = None,
+                  thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
@@ -367,7 +443,17 @@ class _:
         pass
 
     @staticmethod
-    def uniq(array: List[_L1], isSorted: bool = False, iteratee: _LodashIteratee = None, thisArg: Any = None):
+    def unique(array: List[_L1],
+               isSorted: bool = False,
+               iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+               thisArg: Any = None) -> List[_L1]:
+        pass
+
+    @staticmethod
+    def uniq(array: List[_L1],
+             isSorted: bool = False,
+             iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+             thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
@@ -375,7 +461,9 @@ class _:
         pass
 
     @staticmethod
-    def unzipWith(array: List[Any], iteratee: Optional[Callable[[Any, Any, Any, Any]]] = None, thisArg: Any = None):
+    def unzipWith(array: List[Any],
+                  iteratee: Optional[Callable[[Any, Any, Any, Any], Any]] = None,
+                  thisArg: Any = None) -> List[Any]:
         pass
 
     @staticmethod
@@ -395,126 +483,157 @@ class _:
         pass
 
     @staticmethod
-    def zipWith(array: List[Any], iteratee: Optional[Callable[[Any, Any, Any, Any]]] = None, thisArg: Any = None):
+    def zipWith(array: List[Any],
+                iteratee: Optional[Callable[[Any, Any, Any, Any], None]] = None,
+                thisArg: Any = None) -> List[Any]:
         pass
 
     @staticmethod
-    def all(collection: List[_L1], predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def all(collection: List[_L1],
+            predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+            thisArg: Any = None) -> bool:
         pass
 
     @staticmethod
-    def any(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def any(collection: Union[List[_L1], Dict[Any, _L1]],
+            predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+            thisArg: Any = None) -> bool:
         pass
 
     @staticmethod
-    def at(collection: _Collection, *props: Any) -> List[_L1]:
+    def at(collection: Union[List[_L1], Dict[Any, _L1]], *props: Any) -> List[_L1]:
         pass
 
     @staticmethod
-    def countBy(collection: _Collection, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[_L2, int]:
+    def countBy(collection: Union[List[_L1], Dict[Any, _L1]],
+                iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                thisArg: Any = None) -> Dict[_L2, int]:
         pass
 
     @staticmethod
-    def every(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def every(collection: Union[List[_L1], Dict[Any, _L1]],
+              predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+              thisArg: Any = None) -> bool:
         pass
 
     @staticmethod
-    def filter(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def filter(collection: Union[List[_L1], Dict[Any, _L1]],
+               predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
-    def find(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def find(collection: Union[List[_L1], Dict[Any, _L1]],
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+             thisArg: Any = None) -> _L1:
         pass
 
     @staticmethod
-    def findLast(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def findLast(collection: Union[List[_L1], Dict[Any, _L1]],
+                 predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                 thisArg: Any = None) -> _L1:
         pass
 
     @staticmethod
-    def findWhere(collection: Any, predicate: _LodashPredicate = None, thisArg: Any = None) -> _L1:
+    def findWhere(collection: Any,
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> _L1:
         pass
 
     @staticmethod
-    def forEach(collection: _Collection, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def groupBy(collection: Union[List[_L1], Dict[Any, _L1]],
+                iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                thisArg: Any = None) -> Dict[_L2, List[_L1]]:
         pass
 
     @staticmethod
-    def forEachRight(collection: _Collection, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def includes(collection: Union[List[_L1], Dict[Any, _L1], str], value: _L1, fromIndex: int = 0) -> bool:
         pass
 
     @staticmethod
-    def groupBy(collection: _Collection, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[_L2, List[_L1]]:
+    def indexBy(collection: Union[List[_L1], Dict[Any, _L1]],
+                iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+                thisArg: Any = None) -> Dict[str, _L1]:
         pass
 
     @staticmethod
-    def includes(collection: _Collection, value: _L1, fromIndex: int = 0) -> bool:
+    def invoke(collection: Union[List[_L1], Dict[Any, _L1]], path: str, *args: Any) -> Any:
         pass
 
     @staticmethod
-    def indexBy(collection: _Collection, iteratee: _LodashIteratee = None, thisArg: Any = None) -> Dict[str, _L1]:
+    def map(collection: Union[List[_L1], Dict[Any, _L1]],
+            iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+            thisArg: Any = None) -> List[_L2]:
         pass
 
     @staticmethod
-    def invoke(collection: _Collection, path: str, *args: Any) -> Any:
+    def partition(collection: Union[List[_L1], Dict[Any, _L1]],
+                  predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                  thisArg: Any = None) -> Tuple[List[_L1], List[_L1]]:
         pass
 
     @staticmethod
-    def map(collection: _Collection, iteratee: _LodashIteratee = None, thisArg: Any = None) -> _L2:
+    def pluck(collection: Union[List[_L1], Dict[Any, _L1]], path: Union[str, List[str]]) -> List[Any]:
         pass
 
     @staticmethod
-    def partition(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) \
-            -> Tuple[List[_L1], List[_L1]]:
-        pass
-
-    @staticmethod
-    def pluck(collection: _Collection, path: Union[str, List[str]]) -> List[Any]:
-        pass
-
-    @staticmethod
-    def reduce(collection: _Collection, iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
+    def reduce(collection: Union[List[_L1], Dict[Any, _L1]],
+               iteratee: Callable[[_L2, _L1], _L2] = None,
+               accumulator: _L2 = None,
                thisArg: Any = None) -> _L2:
         pass
 
     @staticmethod
-    def reduceRight(collection: _Collection, iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
+    def reduceRight(collection: Union[List[_L1], Dict[Any, _L1]],
+                    iteratee: Callable[[_L2, _L1], _L2] = None,
+                    accumulator: _L2 = None,
                     thisArg: Any = None) -> _L2:
         pass
 
     @staticmethod
-    def reject(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> List[_L1]:
+    def reject(collection: Union[List[_L1], Dict[Any, _L1]],
+               predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+               thisArg: Any = None) -> List[
+        _L1]:
         pass
 
     @staticmethod
-    def sample(collection: _Collection) -> _L1:
+    def sample(collection: Union[List[_L1], Dict[Any, _L1]]) -> _L1:
         pass
 
     @staticmethod
-    def shuffle(collection: _Collection) -> List[_L1]:
+    def shuffle(collection: Union[List[_L1], Dict[Any, _L1]]) -> List[_L1]:
         pass
 
     @staticmethod
-    def size(collection: Optional[_Collection]) -> int:
+    def size(collection: Optional[Union[List[_L1], Dict[Any, _L1]]]) -> int:
         pass
 
     @staticmethod
-    def some(collection: _Collection, predicate: _LodashPredicate = None, thisArg: Any = None) -> bool:
+    def some(collection: Union[List[_L1], Dict[Any, _L1]],
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+             thisArg: Any = None) -> bool:
         pass
 
     @staticmethod
-    def sortBy(collection: _Collection, iteratee: _LodashIteratee = None, thisArg: Any = None) -> List[_L1]:
+    def sortBy(collection: Union[List[_L1], Dict[Any, _L1]],
+               iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+               thisArg: Any = None) -> List[_L1]:
         pass
 
     @staticmethod
-    def sortByAll(collection: _Collection, *iteratee: _LodashIteratee) -> List[_L1]:
+    def sortByAll(collection: Union[List[_L1], Dict[Any, _L1]],
+                  *iteratee: Union[str, Callable[[_L1], _L2], None]) -> List[_L1]:
         pass
 
     @staticmethod
-    def sortByOrder(collection: _Collection, iteratees: List[_LodashIteratee], orders: List[str]) -> List[_L1]:
+    def sortByOrder(collection: Union[List[_L1], Dict[Any, _L1]],
+                    iteratees: List[Union[str, Callable[[_L1], _L2], None]],
+                    orders: List[str]) -> List[_L1]:
         pass
 
     @staticmethod
-    def where(collection: _Collection, source: Any) -> List[_L1]:
+    def where(collection: Union[List[_L1], Dict[Any, _L1]], source: Any) -> List[_L1]:
         pass
 
     @staticmethod
@@ -646,11 +765,15 @@ class _:
         pass
 
     @staticmethod
-    def max(collection: _Collection, iteratee: Callable[[_L1], _L3] = lambda x: x, thisArg: Any = None) -> _L1:
+    def max(collection: Union[List[_L1], Dict[Any, _L1]],
+            iteratee: Union[str, Callable[[_L1], Any], None] = lambda x: x,
+            thisArg: Any = None) -> _L1:
         pass
 
     @staticmethod
-    def min(collection: _Collection, iteratee: Callable[[_L1], _L3] = lambda x: x, thisArg: Any = None) -> _L1:
+    def min(collection: Union[List[_L1], Dict[Any, _L1]],
+            iteratee: Union[str, Callable[[_L1], Any], None] = lambda x: x,
+            thisArg: Any = None) -> _L1:
         pass
 
     @staticmethod
@@ -658,7 +781,13 @@ class _:
         pass
 
     @staticmethod
-    def sum(collection: _Collection, iteratee: Callable[[_L1], _L3] = lambda x: x, thisArg: Any = None) -> _L3:
+    def sum(collection: Union[List[_L1], Dict[Any, _L1]],
+            iteratee: Union[str, Callable[[_L1], _L2], None] = None,
+            thisArg: Any = None) -> _L2:
+        pass
+
+    @staticmethod
+    def extend(_object: Any, *sources: Any) -> Any:
         pass
 
     @staticmethod
@@ -678,23 +807,27 @@ class _:
         pass
 
     @staticmethod
-    def findKey(_object: Any, predicate: _LodashPredicate = None, thisArg: Any = None) -> str:
+    def findKey(_object: Any,
+                predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                thisArg: Any = None) -> str:
         pass
 
     @staticmethod
-    def findLastKey(_object: Any, predicate: _LodashPredicate = None, thisArg: Any = None) -> str:
+    def findLastKey(_object: Any,
+                    predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str] = None,
+                    thisArg: Any = None) -> str:
         pass
 
     @staticmethod
-    def forIn(_object: Any, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def forIn(_object: _L4, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None) -> _L4:
         pass
 
     @staticmethod
-    def forInRight(_object: Any, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def forInRight(_object: _L4, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None) -> _L4:
         pass
 
     @staticmethod
-    def forOwn(_object: Any, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None):
+    def forOwn(_object: _L4, iteratee: Callable[[_L1], Optional[bool]] = None, thisArg: Any = None) -> _L4:
         pass
 
     @staticmethod
@@ -734,7 +867,9 @@ class _:
         pass
 
     @staticmethod
-    def omit(_object: Any, predicate: _LodashPredicate, thisArg: Any = None) -> Any:
+    def omit(_object: Any,
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str],
+             thisArg: Any = None) -> Any:
         pass
 
     @staticmethod
@@ -742,7 +877,9 @@ class _:
         pass
 
     @staticmethod
-    def pick(_object: Any, predicate: _LodashPredicate, thisArg: Any = None) -> Any:
+    def pick(_object: Any,
+             predicate: Union[Dict[str, Any], Callable[[_L1], bool], None, str],
+             thisArg: Any = None) -> Any:
         pass
 
     @staticmethod
@@ -750,11 +887,13 @@ class _:
         pass
 
     @staticmethod
-    def set(_object: Any, path: str, value: Any):
+    def set(_object: _L4, path: str, value: Any) -> _L4:
         pass
 
     @staticmethod
-    def transform(_object: Any, iteratee: Callable[[_L2, _L1], _L2] = None, accumulator: _L2 = None,
+    def transform(_object: Any,
+                  iteratee: Callable[[_L2, _L1], _L2] = None,
+                  accumulator: _L2 = None,
                   thisArg: Any = None) -> _L2:
         pass
 
@@ -764,4 +903,8 @@ class _:
 
     @staticmethod
     def valuesIn(_object: Union[Dict[str, _L2], Any]) -> List[_L2]:
+        pass
+
+    @staticmethod
+    def random(minimum: int, maximum: int) -> int:
         pass

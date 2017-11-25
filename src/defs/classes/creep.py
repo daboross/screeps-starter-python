@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 
 from .memory import _Memory
 from .misc_obj import Mineral, Resource, RoomObject, Source
@@ -37,6 +37,8 @@ class Creep(RoomObject):
     :type spawning: bool
     :type ticksToLive: int
     """
+
+    prototype = None  # type: ClassVar[Any]
 
     def __init__(self, pos: RoomPosition, room: Room, body: List[_CreepPart], carry: Dict[str, int],
                  carryCapacity: int, fatigue: int, hits: int, hitsMax: int, _id: str, memory: _Memory,
@@ -84,7 +86,7 @@ class Creep(RoomObject):
     def getActiveBodyparts(self, _type: str) -> int:
         pass
 
-    def harvest(self, target: Union[Source, Mineral]):
+    def harvest(self, target: Union[Source, Mineral]) -> int:
         pass
 
     def heal(self, target: 'Creep') -> int:
@@ -96,7 +98,7 @@ class Creep(RoomObject):
     def moveByPath(self, path: Union[list, str]) -> int:
         pass
 
-    def moveTo(self, target: RoomPosition, opts: Dict[str, Any]) -> int:
+    def moveTo(self, target: Union[RoomPosition, RoomObject], opts: Optional[Dict[str, Any]] = None) -> int:
         pass
 
     def notifyWhenAttacked(self, enabled: bool) -> int:

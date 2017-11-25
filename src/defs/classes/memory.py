@@ -1,8 +1,8 @@
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 __all__ = ['Memory', 'RawMemory', '_Memory', '_MemoryValue']
 
-_MemoryValue = Union[str, int, float, bool, '_Me    mory', List['_MemoryValue'], None]
+_MemoryValue = Union[str, int, float, bool, '_Memory', List['_MemoryValue'], None]
 
 
 class _Memory(dict):
@@ -43,21 +43,21 @@ class RawMemory:
         pass
 
     @classmethod
-    def set(cls, value: str):
+    def set(cls, value: str) -> None:
         pass
 
     @classmethod
-    def setActiveSegments(cls, ids: List[int]):
+    def setActiveSegments(cls, ids: List[int]) -> None:
         pass
 
     @classmethod
-    def setActiveForeignSegment(cls, username: Optional[str], _id: int = None):
+    def setActiveForeignSegment(cls, username: Optional[str], _id: Optional[int] = None) -> None:
         pass
 
     @classmethod
-    def setDefaultPublicSegment(cls, _id: Optional[int]):
+    def setDefaultPublicSegment(cls, _id: Optional[int]) -> None:
         pass
 
     @classmethod
-    def setPublicSegments(cls, ids: List[int]):
+    def setPublicSegments(cls, ids: List[int]) -> None:
         pass
