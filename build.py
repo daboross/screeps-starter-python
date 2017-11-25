@@ -11,7 +11,7 @@ import base64
 import os
 import shutil
 
-transcrypt_arguments = ['-n', '-p', '.none', '--noalias']
+transcrypt_arguments = ['-n', '-p', '.none']
 transcrypt_dirty_args = transcrypt_arguments + []
 transcrypt_clean_args = transcrypt_arguments + ['-b']
 
