@@ -20,6 +20,9 @@ class RoomPosition:
     prototype = None  # type: Type[RoomPosition]
 
     def __init__(self, x: int, y: int, roomName: str) -> None:
+        """
+        NOTE: In order to use this, you must surround it with `__new__`: `__new__(RoomPosition(x, y, roomName))`
+        """
         self.x = x
         self.y = y
         self.roomName = roomName
@@ -72,6 +75,9 @@ class _Owner:
     """
 
     def __init__(self, username: str) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.username = username
 
 
@@ -85,6 +91,9 @@ class _PathPos:
     """
 
     def __init__(self, x: int, y: int, dx: int, dy: int, direction: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.x = x
         self.y = y
         self.dx = dx
@@ -109,6 +118,9 @@ class Room:
     def __init__(self, controller: Optional[StructureController], storage: Optional[StructureStorage],
                  terminal: Optional[StructureTerminal], energyAvailable: int, energyCapacityAvailable: int,
                  memory: _Memory, mode: str, name: str, visual: Any) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.controller = controller  # type: Optional[StructureController]
         self.storage = storage  # type: Optional[StructureStorage]
         self.terminal = terminal  # type: Optional[StructureTerminal]

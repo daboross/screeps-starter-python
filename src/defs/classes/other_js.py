@@ -100,6 +100,9 @@ class module:
 
 class RegExp(str):
     def __init__(self, regex: str, args: Optional[str] = None) -> None:
+        """
+        NOTE: In order to use this, you must surround it with `__new__`: `__new__(RegExp(expression))`
+        """
         super().__init__(regex)
         self.ignoreCase = False
         self.js_global = False
@@ -160,6 +163,9 @@ V = TypeVar("V")
 
 class Map(Generic[K, V]):
     def __init__(self, iterable: Optional[List[Tuple[K, V]]] = None) -> None:
+        """
+        NOTE: In order to use this, you must surround it with `__new__`: `__new__(Map(iterable))`
+        """
         pass
 
     @property
@@ -196,6 +202,9 @@ class Map(Generic[K, V]):
 
 class Set(Generic[K]):
     def __init__(self, iterable: Optional[List[K]] = None) -> None:
+        """
+        NOTE: In order to use this, you must surround it with `__new__`: `__new__(Set(iterable))`
+        """
         pass
 
     def has(self, key: K) -> bool:

@@ -12,6 +12,9 @@ class RoomObject:
     """
 
     def __init__(self, pos: RoomPosition, room: Room) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.pos = pos
         self.room = room
 
@@ -29,6 +32,9 @@ class Flag(RoomObject):
 
     def __init__(self, pos: RoomPosition, room: Optional[Room], color: int, secondaryColor: int,
                  memory: _Memory, name: str) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(pos, room)
         self.color = color
         self.secondaryColor = secondaryColor
@@ -63,6 +69,9 @@ class Source(RoomObject):
 
     def __init__(self, pos: RoomPosition, room: Optional[Room], energy: int, energyCapacity: int, _id: str,
                  ticksToRegeneration: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(pos, room)
         self.energy = energy
         self.energyCapacity = energyCapacity
@@ -82,6 +91,9 @@ class Mineral(RoomObject):
 
     def __init__(self, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
                  _id: str, ticksToRegeneration: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(pos, room)
         self.density = density
         self.mineralAmount = mineralAmount
@@ -99,6 +111,9 @@ class Resource(RoomObject):
     """
 
     def __init__(self, pos: RoomPosition, room: Room, _id: str, amount: int, resourceType: str) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(pos, room)
         self.id = _id
         self.amount = amount

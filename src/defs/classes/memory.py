@@ -24,6 +24,9 @@ class _ForeignSegment:
     """
 
     def __init__(self, username: str, _id: int, data: str) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.data = data
         self.username = username
         self.id = _id

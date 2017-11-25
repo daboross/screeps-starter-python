@@ -17,6 +17,9 @@ class _GameCpu:
     """
 
     def __init__(self, limit: int, tickLimit: int, bucket: int, shardLimits: Dict[str, int]) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.limit = limit
         self.tickLimit = tickLimit
         self.bucket = bucket
@@ -37,6 +40,9 @@ class _GameShard:
     """
 
     def __init__(self, name: str, type: str, ptr: bool) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.name = name
         self.type = type
         self.ptr = ptr
@@ -51,6 +57,9 @@ class _GameGcl:
     """
 
     def __init__(self, level: int, progress: int, progressTotal: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.level = level
         self.progress = progress
         self.progressTotal = progressTotal
@@ -85,6 +94,9 @@ class _MarketTransactionOrder:
     """
 
     def __init__(self, _id: str, _type: str, price: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.id = _id
         self.type = _type
         self.price = price
@@ -108,6 +120,9 @@ class _MarketTransaction:
     def __init__(self, transactionId: str, time: int, sender: _Owner, recipient: _Owner, resourceType: str,
                  amount: int, js_from: str, to: str, description: str, order: Optional[_MarketTransactionOrder]) \
             -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.transactionId = transactionId
         self.time = time
         self.sender = sender
@@ -135,6 +150,9 @@ class _MarketOrder:
 
     def __init__(self, _id: str, created: int, _type: str, resourceType: str, roomName: str, amount: int,
                  remainingAmount: int, price: float) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.id = _id
         self.created = created
         self.type = _type
@@ -154,6 +172,9 @@ class _OwnedMarketOrder(_MarketOrder):
 
     def __init__(self, _id: str, created: int, _type: str, resourceType: str, roomName: str, amount: int,
                  remainingAmount: int, price: float, active: bool, totalAmount: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(_id, created, _type, resourceType, roomName, amount, remainingAmount, price)
         self.active = active
         self.totalAmount = totalAmount
@@ -170,6 +191,9 @@ class _GameMarket:
 
     def __init__(self, _credits: int, incomingTransactions: List[_MarketTransaction],
                  outgoingTransactions: List[_MarketTransaction], orders: Dict[str, _OwnedMarketOrder]) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.credits = _credits
         self.incomingTransactions = incomingTransactions
         self.outgoingTransactions = outgoingTransactions
@@ -250,6 +274,9 @@ class _PathFinderResult:
     """
 
     def __init__(self, path: List[RoomPosition], ops: int, cost: int, incomplete: bool) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.path = path
         self.ops = ops
         self.cost = cost
@@ -264,6 +291,9 @@ class PathFinder:
 
     class CostMatrix:
         def __init__(self) -> None:
+            """
+            NOTE: In order to use this, you must surround it with `__new__`: `__new__(CostMatrix())`
+            """
             pass
 
         def set(self, x: int, y: int, cost: int) -> None:

@@ -14,6 +14,9 @@ class _CreepPart:
     """
 
     def __init__(self, _type: str, hits: int, boost: Optional[str]) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         self.type = _type
         self.hits = hits
         self.boost = boost
@@ -43,6 +46,9 @@ class Creep(RoomObject):
     def __init__(self, pos: RoomPosition, room: Room, body: List[_CreepPart], carry: Dict[str, int],
                  carryCapacity: int, fatigue: int, hits: int, hitsMax: int, _id: str, memory: _Memory,
                  my: bool, name: str, owner: _Owner, saying: Optional[str], spawning: bool, ticksToLive: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
         super().__init__(pos, room)
         self.body = body
         self.carry = carry
