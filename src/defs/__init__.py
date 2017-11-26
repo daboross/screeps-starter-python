@@ -16,12 +16,14 @@ A few notes:
   typed with `:type x: y` style types, for editors such as PyCharm which do not fully use annotations
   for type hinting.
 """
+
+# noinspection PyUnboundLocalVariable,PyUnresolvedReferences
+__pragma__('skip')
+
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from transcrypt.modules.org.transcrypt.stubs.browser import __pragma__
-
-__pragma__('skip')
 
 from .constants import *
 from .classes import *
