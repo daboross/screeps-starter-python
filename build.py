@@ -39,6 +39,7 @@ def possible_pip_binary_paths(config):
     files = [
         os.path.join(config.base_dir, 'env', 'bin', 'pip'),
         os.path.join(config.base_dir, 'env', 'bin', 'pip.exe'),
+        os.path.join(config.base_dir, 'env', 'Scripts', 'pip.exe')
     ]
     if not config.enter_env:
         for path in [shutil.which('pip'), shutil.which('pip.exe')]:
