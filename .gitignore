@@ -92,6 +92,7 @@ env
 .screeps-password
 .screeps-email
 config.json
+__py_build__/
 
 # Misc files #
 ##############
