@@ -11,6 +11,8 @@ import base64
 import os
 import shutil
 
+import file_expander
+
 transcrypt_arguments = ['-n', '-p', '.none']
 transcrypt_dirty_args = transcrypt_arguments + []
 transcrypt_clean_args = transcrypt_arguments + ['-b']
@@ -60,7 +62,7 @@ class Configuration:
     :type ptr: bool
     """
 
-    def __init__(self, base_dir, config_json, clean_build=True):
+    def __init__(self, base_dir, config_json, clean_build=True, flatten=False):
         """
         :type base_dir: str
         :type config_json: dict[str, str | bool]
@@ -74,6 +76,7 @@ class Configuration:
         self.enter_env = config_json.get('enter-env', True)
 
         self.clean_build = clean_build
+        self.flatten = flatten
 
     def transcrypt_executable(self):
         """
@@ -97,6 +100,14 @@ class Configuration:
                 return path
         return None
 
+    @property
+    def source_dir(self):
+        """str: Target directory for Transcrypt build process"""
+        if self.flatten:
+            return os.path.join(self.base_dir, 'src', '__py_build__')
+        else:
+            return os.path.join(self.base_dir, 'src')
+
 
 def load_config(base_dir):
     """
@@ -110,6 +121,10 @@ def load_config(base_dir):
                         help="file to load configuration from")
     parser.add_argument("-d", "--dirty-build", action='store_true',
                         help="if true, use past built files for files who haven't changed")
+    parser.add_argument("-e", "--expand-files", action='store_true',
+                        help="""Alternative to Transcrypt's -xpath option for \
+                        finding nested modules.  Use this option if Transcrypt \
+                        is unable to import nested .py files""")
     args = parser.parse_args()
 
     config_file = os.path.join(base_dir, 'config.json')
@@ -117,7 +132,7 @@ def load_config(base_dir):
     with open(os.path.join(base_dir, config_file)) as f:
         config_json = json.load(f)
 
-    return Configuration(base_dir, config_json, clean_build=not args.dirty_build)
+    return Configuration(base_dir, config_json, clean_build=not args.dirty_build, flatten=args.expand_files)
 
 
 def run_transcrypt(config):
@@ -127,7 +142,8 @@ def run_transcrypt(config):
     :type config: Configuration
     """
     transcrypt_executable = config.transcrypt_executable()
-    source_main = os.path.join(config.base_dir, 'src', 'main.py')
+
+    source_main = os.path.join(config.source_dir, 'main.py')
 
     if config.clean_build:
         cmd_args = transcrypt_clean_args
@@ -135,13 +151,12 @@ def run_transcrypt(config):
         cmd_args = transcrypt_dirty_args
 
     args = [transcrypt_executable] + cmd_args + [source_main]
-    source_dir = os.path.join(config.base_dir, 'src')
 
-    ret = subprocess.Popen(args, cwd=source_dir).wait()
+    ret = subprocess.Popen(args, cwd=config.source_dir).wait()
 
     if ret != 0:
         raise Exception("transcrypt failed. exit code: {}. command line '{}'. working dir: '{}'."
-                        .format(ret, "' '".join(args), source_dir))
+                        .format(ret, "' '".join(args), config.source_dir))
 
 
 def copy_artifacts(config):
@@ -161,7 +176,7 @@ def copy_artifacts(config):
         else:
             raise
 
-    shutil.copyfile(os.path.join(config.base_dir, 'src', '__javascript__', 'main.js'),
+    shutil.copyfile(os.path.join(config.source_dir, '__javascript__', 'main.js'),
                     os.path.join(dist_directory, 'main.js'))
 
     js_directory = os.path.join(config.base_dir, 'js_files')
@@ -304,8 +319,12 @@ def install_env(config):
 def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     config = load_config(base_dir)
-
     install_env(config)
+
+    if config.flatten:
+        expander_control = file_expander.FileExpander(base_dir)
+        expander_control.expand_files()
+
     build(config)
     upload(config)
 
