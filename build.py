@@ -102,7 +102,7 @@ class Configuration:
 
     @property
     def source_dir(self):
-        """str: Target directory for Transcrypt build process"""
+        """:rtype: str"""
         if self.flatten:
             return os.path.join(self.base_dir, 'src', '__py_build__')
         else:
