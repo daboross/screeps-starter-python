@@ -18,8 +18,6 @@ import pathlib
 import shutil
 import filecmp
 
-from datetime import datetime
-
 
 class FileExpander:
     """Class for managing file expansion operations.
