@@ -24,20 +24,22 @@ class FileExpander:
 
         :type base_dir: pathlib.Path
         :type build_dir: pathlib.Path
-
     """
 
     def __init__(self, base_dir):
         """
         :param base_dir: absolute path of the screeps-starter-python directory
         :type base_dir: str
+
         """
         self.base_dir = pathlib.Path(base_dir).joinpath('src')
         self.build_dir = self.verify_build_directory()
 
     def verify_build_directory(self):
-        """Verifies existence and contents of __py_build__ directory. Missing
-        directories are either created, or copied from its counterpart in src/""
+        """Verifies existence and contents of __py_build__ directory.
+
+        Missing directories are either created, or copied from its counterpart
+        in src/""
 
         :return: concrete Path object of the __py_build__ directory
         :rtype: pathlib.Path
@@ -57,47 +59,35 @@ class FileExpander:
         if not defs_build_directory.is_dir():
             shutil.copytree(defs_source_path, defs_build_path)
 
-        else:
-            if not self.verify_defs_integrity(defs_build_directory, defs_source_directory):
-                shutil.copytree(defs_source_path, defs_build_path)
+        self.verify_defs_integrity(defs_source_directory, build_directory)
 
         return build_directory
 
     @staticmethod
-    def verify_defs_integrity(build_dir, source_dir):
+    def verify_defs_integrity(source_dir, build_dir):
         """Verifies integrity of defs/ folder in __py_build__
 
-        If any file in __py_build__/defs can't be matched against a file in
-        src/defs, the method immediately returns as False.  The method will also
-        return false if the total number of files differs.
+        File contents under src/defs are compared against __py_build__/defs; a
+        file update will only be triggered by modifications to files under
+        src/defs.
 
-        :returns: result of the the file and directory comparisons
-        :rtype: bool
+        :rtype: None
         """
 
-        defs_source_files = [str(f.absolute()) for f in source_dir.glob('**/*.py')]
-        defs_build_files = [str(f.absolute()) for f in build_dir.glob('**/*.py')]
+        defs_source_files = [f.absolute() for f in source_dir.glob('**/*.py')]
 
-        if len(defs_source_files) != len(defs_build_files):
-            return False
+        for file in defs_source_files:
+            slice_index = file.parts.index('src') + 1
+            partner = build_dir.joinpath(*file.parts[slice_index:])
 
-        for build_file in sorted(defs_build_files):
-            for src_file in sorted(defs_source_files):
-                if filecmp.cmp(build_file, src_file):
-                    break
-            else:
-                return False
-
-        return True
+            if not partner.is_file() or not filecmp.cmp(str(file), str(partner)):
+                shutil.copy2(str(file), str(partner))
 
     def expand_files(self):
         """Creates a flattened file structure of all user-defined screeps code
 
-        All user-defined .py files in src/ regardless if they are in sub-folders
-        or directly under src/ will be copied to __py_build__.  The copy
-        operation places all files directly under __py_build__; the original
-        files are not modified or moved. Copy attempts will only be directed at
-        new and/or updated files.
+        Copies all modified or new .py files found directly under src/, or in
+        subdirectories under src/, to __py_build__.
 
         :return: total number of files copied to __py_build__
         :rtype: int
@@ -108,6 +98,7 @@ class FileExpander:
         copied_files = 0
         for target in target_files:
             partner = self.build_dir.joinpath(target.name)
+
             target_path, partner_path = str(target.absolute()), str(partner.absolute())
 
             if not (partner.is_file() and filecmp.cmp(target_path, partner_path)):
@@ -119,13 +110,8 @@ class FileExpander:
     def find_target_file_paths(self):
         """Finds all potential target files for the file expansion operation
 
-        Files and/or directories under the exclusions list are ignored. Any
-        files matching search criteria are only candidates for the copy process;
-        the list resulting from this method does not represent the list of all
-        files that will be copied to __py_build__.
-
-       :return: All files to be checked by self.expand_files
-       :rtype: list[pathlib.Path]
+        :return: All files to be checked by self.expand_files
+        :rtype: list[pathlib.Path]
         """
 
         exclusions = [
@@ -152,3 +138,4 @@ class FileExpander:
                 target_files.append(file)
 
         return target_files
+
