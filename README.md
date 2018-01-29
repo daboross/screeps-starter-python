@@ -53,3 +53,38 @@ Notes:
 If there is anything else you've found, do file an issue and I will include it here. Transcrypt does use the native
 Python interpreter, but it doesn't replicate python perfectly. When in doubt, looking at the created `main.js` file can
 provide a lot of insight into how things run.
+
+#### Windows Setup
+
+For Windows users, running `build.py` may fail if `virtualenv` cannot be detected in your `PATH`.  The setup procedure here
+should only be used if the primary installation method at this top of this README does not work.
+
+This setup procedure uses `conda`, which is provided through the Python Version 3.6
+[Miniconda installer](https://conda.io/miniconda.html)  If you already have something like [Anaconda](https://www.anaconda.com/what-is-anaconda/) on your system, you can skip this step.  If you are new to `conda`, the [official quick start
+guide](https://conda.io/docs/user-guide/getting-started.html) does a great job of covering the basics.
+
+While Miniconda will install its own version of Python to your system, you do not need to modify or uninstall any version
+already in place.  The installer will ask if you want Miniconda to be used as your default version of Python; if you plan to
+use conda only for screeps, you can decline.
+
+Once the installation is complete, look for a program icon labeled `Anaconda Prompt` and run it.  All commands listed for the
+rest of the guide must be entered in the terminal created by `Anaconda Prompt`.
+
+Enter the following commands in the order listed:
+
+  1. `conda create -n screeps python=3.5`
+  2. `activate screeps`
+  3. `conda install git`
+  4. `conda install -c anaconda virtualenv`
+
+Once finished, you can now try `python build.py` again.
+
+To transpile your Python code to JavaScript, `build.py` must be called from an Anaconda Prompt using the `screeps`
+environment; this can be achieved through the following steps:
+
+  1. Open an Anaconda Prompt
+  2. enter the command: `activate screeps`
+
+The above steps only need to be performed when opening a new Anaconda Prompt, you can keep it running in the background while
+you make changes to your code and switch to it only when you need to run `build.py`.  To deactivate the `screeps`
+environment, you can either enter the command `deactivate screeps`, or you can close the prompt itself.
