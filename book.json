@@ -1,4 +1,5 @@
 {
+    "root": "./book",
     "plugins": ["theme-api", "code"],
     "pluginsConfig": {
         "theme-api": {
