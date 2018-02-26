@@ -47,8 +47,6 @@ Notes:
   error. To work around this, I just use `list[len(list) - 1]` instead of `list[-1]`.
 - Slicing out of bounds in an array will result in a list containing nulls. For instance, while `([1, 2, 3])[:5]` gives
   `[1, 2, 3]` in Python, it will give `[1, 2, 3, null, null]` in Transcrypt.
-- `int()` does not floor values as expected - it simply parses float values. If flooring is needed, use
-  `Math.floor(int(x))`.
 
 If there is anything else you've found, do file an issue and I will include it here. Transcrypt does use the native
 Python interpreter, but it doesn't replicate python perfectly. When in doubt, looking at the created `main.js` file can
