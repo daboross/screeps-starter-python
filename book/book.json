@@ -1,0 +1,22 @@
+{
+    "plugins": ["theme-api", "code"],
+    "pluginsConfig": {
+        "theme-api": {
+            "languages": [
+                {
+                    "lang": "js",
+                    "name": "JavaScript"                    
+                },
+                {
+                    "lang": "go",
+                    "name": "Go"
+                },
+                {
+                    "lang": "py",
+                    "name": "Python",
+                    "default": true
+                }
+            ]
+        }
+    }
+}
