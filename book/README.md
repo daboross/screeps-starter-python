@@ -1,3 +1,4 @@
-# Screeps-Start-Python Documentation
+sceeps-starter-python
+=====================
 
-An overview of writing Python code for use in Screeps
+An overview of writing Python code for use in Screeps.

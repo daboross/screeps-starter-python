@@ -5,11 +5,7 @@
             "languages": [
                 {
                     "lang": "js",
-                    "name": "JavaScript"                    
-                },
-                {
-                    "lang": "go",
-                    "name": "Go"
+                    "name": "JavaScript"
                 },
                 {
                     "lang": "py",

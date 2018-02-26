@@ -2,9 +2,10 @@
 
 ## Overview
 
-* [My Awesome API](README.md)
+* [screeps-starter-python](README.md)
+* [setting up repository](setup.md)
 
-## Screeps API
+## Screeps API Usage
 
 * [Constants](constants.md)
 * [Optional Arguments ](optional-arguments.md)
@@ -20,9 +21,10 @@
 * [Introduction](lodash/introduction.md)
 * [As Arguments to API Methods](lodash/as-arguments-to-api-methods.md)
 
-## Syntax Changes
+## [Syntax Changes vs. Python](syntax-changes/index.md)
 
-* ["in" Operator](syntax-changes/in-operator.md)
-* [Lists](syntax-changes/lists.md)
-* Object Iteration
+* [`in` Opperator](syntax-changes/in-operator.md)
+* [List Behavior](syntax-changes/lists.md)
+* [`del` Operator](syntax-changes/del-operator-overload.md)
+* TODO: Object Iteration
 
