@@ -23,7 +23,7 @@
 
 ## Syntax Changes
 
-* [summary](syntax-changes/index.md)
+* [Summary](syntax-changes/index.md)
 * [`in` Opperator](syntax-changes/in-operator.md)
 * [List Behavior](syntax-changes/lists.md)
 * [`del` Operator](syntax-changes/del-operator-overload.md)
