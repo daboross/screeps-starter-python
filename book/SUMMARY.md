@@ -2,8 +2,8 @@
 
 ## Overview
 
-* [screeps-starter-python](README.md)
-* [setting up repository](setup.md)
+* [Screeps Starter Python](README.md)
+* [Setup](setup.md)
 
 ## Screeps API Usage
 
@@ -21,10 +21,11 @@
 * [Introduction](lodash/introduction.md)
 * [As Arguments to API Methods](lodash/as-arguments-to-api-methods.md)
 
-## [Syntax Changes vs. Python](syntax-changes/index.md)
+## Syntax Changes
 
+* [summary](syntax-changes/index.md)
 * [`in` Opperator](syntax-changes/in-operator.md)
 * [List Behavior](syntax-changes/lists.md)
 * [`del` Operator](syntax-changes/del-operator-overload.md)
-* TODO: Object Iteration
+* Object Iteration
 

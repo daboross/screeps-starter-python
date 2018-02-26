@@ -37,8 +37,8 @@ the_list = [1, 2, 3, 4]
 assert the_list[-1] == 4
 # in Transcrypt:
 assert the_list[-1] == undefined # :(
-# instead, you can use
-assert the_list[len(the_list) - 1]
+# instead, you can use:
+assert the_list[len(the_list) - 1] == 4
 ```
 
 ## 3) Slicing outside of an array bounds gives extra items
@@ -52,3 +52,5 @@ assert the_list[:5] == [1, 2]
 # in Transcrypt:
 assert the_list[:5] == [1, 2, undefined, undefined, undefined]
 ```
+
+There isn't a good fix for this besides just expecting this behavior.
