@@ -4,6 +4,7 @@
 
 * [Screeps Starter Python](README.md)
 * [Setup](setup.md)
+* [Upgrading Transcrypt](upgrading-transcrypt.md)
 
 ## Screeps API Usage
 
@@ -27,5 +28,4 @@
 * [`in` Opperator](syntax-changes/in-operator.md)
 * [List Behavior](syntax-changes/lists.md)
 * [`del` Operator](syntax-changes/del-operator-overload.md)
-* Object Iteration
-
+* [`dict` Iteration](syntax-changes/object-iteration.md)

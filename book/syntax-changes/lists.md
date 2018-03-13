@@ -4,7 +4,9 @@ Ideally, we'd have support for lists equivalent to Python itself. Unfortunately,
 
 Three are three differences between Python and Screeps/Transcrypt lists.
 
-## 1) In Screeps, there are two types of lists.
+## 1) In non-IVM Screeps, there are two types of lists.
+
+If you're using the [IVM architecture], you can skip this section! The new architecture, when enabled on an account-level, fixes this problem.
 
 Lists created within our code, in general, support python methods. Lists created outside of our code do not.
 
@@ -25,7 +27,7 @@ The reason this is necessary is that the Screeps environment itself has two sepa
 
 Memory, lodash, and all game methods are created outside our sandbox and thus don't have any of the prototype methods Transcrypt adds to lists.
 
-Once the Screeps team implements [isolated-vm](https://screeps.com/forum/topic/2073/ptr-changelog-2018-01-18-isolated-vm), this will no longer be an issue.
+[IVM architecture](http://blog.screeps.com/2018/03/changelog-2018-03-05/)
 
 ## 2) Negative indices don't work
 
