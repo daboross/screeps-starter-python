@@ -1,0 +1,6 @@
+{
+    "email": "your-username-here",
+    "password": "plain-text-password-set-via-screepsmod-auth",
+    "branch": "default",
+    "url": "http://your-server-url-or-ip:21025"
+}
