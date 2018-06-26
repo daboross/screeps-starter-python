@@ -1,4 +1,3 @@
-import harvester
 # defs is a package which claims to export all constants and some JavaScript objects, but in reality does
 #  nothing. This is useful mainly when using an editor like PyCharm, so that it 'knows' that things like Object, Creep,
 #  Game, etc. do exist.
@@ -17,33 +16,131 @@ __pragma__('noalias', 'type')
 __pragma__('noalias', 'update')
 
 
+
+
+###############################################################################################################################
+#    MY CODE
+###############################################################################################################################
+
+from shared_methods import dm
+import consts
+import towerControl
+import harvester
+import static_harvester
+import hauler
+import upgrader
+import builder
+import manual1
+import manual2
+import manual3
+
+#Run each tick.
 def main():
-    """
-    Main game logic loop.
-    """
+    harvesters = 0
+    static_harvesters = 0
+    haulers = 0
+    upgraders = 0
+    builders = 0
+    
 
-    # Run each creep
-    for name in Object.keys(Game.creeps):
-        creep = Game.creeps[name]
-        harvester.run_harvester(creep)
+    #MEMORY CONTROL
+    #  Cleanup
+    for name, creep in _.pairs(Memory.creeps):
+        if not (name in Game.creeps):
+            del Memory.creeps[name]
 
-    # Run each spawn
-    for name in Object.keys(Game.spawns):
-        spawn = Game.spawns[name]
-        if not spawn.spawning:
-            # Get the number of our creeps in the room.
-            num_creeps = _.sum(Game.creeps, lambda c: c.pos.roomName == spawn.pos.roomName)
-            # If there are no creeps, spawn a creep once energy is at 250 or more
-            if num_creeps < 0 and spawn.room.energyAvailable >= 250:
-                spawn.createCreep([WORK, CARRY, MOVE, MOVE])
-            # If there are less than 15 creeps but at least one, wait until all spawns and extensions are full before
-            # spawning.
-            elif num_creeps < 15 and spawn.room.energyAvailable >= spawn.room.energyCapacityAvailable:
-                # If we have more energy, spawn a bigger creep.
-                if spawn.room.energyCapacityAvailable >= 350:
-                    spawn.createCreep([WORK, CARRY, CARRY, MOVE, MOVE, MOVE])
-                else:
-                    spawn.createCreep([WORK, CARRY, MOVE, MOVE])
+
+    #CREEP CONTROL
+    for creepName in Object.keys(Game.creeps):
+        creep = Game.creeps[creepName]
+
+        if creep.memory.role == 'harvester':
+            harvester.run(creep)
+            harvesters += 1
+        if creep.memory.role == 'static_harvester':
+            static_harvester.run(creep)
+            static_harvesters += 1
+        if creep.memory.role == 'hauler':
+            hauler.run(creep)
+            haulers += 1
+        if creep.memory.role == 'upgrader':
+            upgrader.run(creep)
+            upgraders += 1
+        if creep.memory.role == 'builder':
+            builder.run(creep)
+            builders += 1
+        if creep.memory.role == 'manual':
+            manual1.run(creep)
+
+
+    #TOWER CONTROL
+    for key, room in _.pairs(Game.rooms):
+        for key2, tower in _.pairs(room.find(FIND_STRUCTURES, {'filter':
+                lambda s: s.structureType == STRUCTURE_TOWER})):
+            towerControl.run(tower)
+
+
+    #SPAWN CONTROL
+    for spawnName in Object.keys(Game.spawns):
+        spawn = Game.spawns[spawnName]
+
+        #If already spawning, skip.
+        if spawn.spawning != None:
+            continue
+
+        #If there are not enough of a certain class, spawn it
+        if harvesters < consts.TARGET_HARVESTERS:
+            spawn.spawnCreep(harvester.BODY_1, nameCreep('harvester'),
+                              {'memory': {'role' : 'harvester'}})
+        elif static_harvesters < consts.TARGET_STATIC_HARVESTERS:
+            spawn.spawnCreep(static_harvester.BODY_0,
+                             nameCreep('static_harvester'),
+                             {'memory': {'role' : 'static_harvester'}})
+        elif haulers < consts.TARGET_HAULERS:
+            spawn.spawnCreep(hauler.BODY_2,
+                             nameCreep('hauler'),
+                             {'memory': {'role' : 'hauler'}})
+        elif upgraders < consts.TARGET_UPGRADERS:
+            spawn.spawnCreep(upgrader.BODY_2, nameCreep('upgrader'),
+                             {'memory' : {'role' : 'upgrader'}})
+        elif builders < consts.TARGET_BUILDERS:
+            spawn.spawnCreep(builder.BODY_2, nameCreep('builder'),
+                             {'memory': {'role' : 'builder'}})
+        
+    dm(' ',0)
+           
+def nameCreep(role):
+    if role == 'harvester':
+        target = consts.TARGET_HARVESTERS
+    elif role == 'static_harvester':
+        target = consts.TARGET_STATIC_HARVESTERS
+    elif role == 'hauler':
+        target = consts.TARGET_HAULERS
+    elif role == 'upgrader':
+        target = consts.TARGET_UPGRADERS
+    elif role == 'builder':
+        target = consts.TARGET_BUILDERS
+
+    pre = role[0].upper() + role[1:] + ' '
+
+    i = 0
+    while True:
+        i += 1
+        
+        name = str(pre + str(i))
+        if name in Game.creeps:
+            continue
+        else:
+            return name
 
 
 module.exports.loop = main
+
+
+
+
+
+
+
+
+
