@@ -120,9 +120,6 @@ class _PathPos:
 
 
 # noinspection PyPep8Naming
-
-
-# noinspection PyPep8Naming
 class Room:
     """
     :type controller: Optional[StructureController]
