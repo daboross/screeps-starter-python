@@ -19,6 +19,9 @@ __pragma__('noalias', 'update')
 
 room: Room = Game.rooms['W51S1']
 room.getEventLog()
+lab: StructureLab = Game.getObjectById('id')
+sam: Creep = Game.getObjectById('id')
+res: str = lab.unboostCreep(sam)
 
 
 def main():
