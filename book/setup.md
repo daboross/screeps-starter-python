@@ -21,15 +21,6 @@ To install virtualenv, use `pip` (or another `pip3*` / `pip-3*` command) as foll
 pip install --user virtualenv
 ```
 
-
-After that, the rest of the dependencies will be installed upon running `build.py` for the first time.
-
-The only remaining step will be to provide your screeps credentials. To do that, copy `config.default.json` to
-a new file `config.json`, and enter your email and password into the config.
-
-Following that, you're all set up! All you need to do now is run `python3 build.py` to compile, collect and deploy your
-code.
-
 Installing under Windows using 'conda'
 =====================================
 
@@ -67,3 +58,17 @@ environment; this can be achieved through the following steps:
 The above steps only need to be performed when opening a new Anaconda Prompt, you can keep it running in the background while
 you make changes to your code and switch to it only when you need to run `build.py`.  To deactivate the `screeps`
 environment, you can either enter the command `deactivate screeps`, or you can close the prompt itself.
+
+Post Installation Steps
+=======================
+
+The last step to setting up `screeps-game-api` is to create and configure the build. This will allow `build.py` to
+upload files directly to the screeps server after building.
+
+Copy `config.default.json` into a file `config.json`, enter your username or email into the file, and enter your
+screeps (not steam) password in the file.
+
+Following that, you're all set up! `build.py` will automatically download and install the rest of the dependencies into
+a local environment when it is first run.
+
+All you need to do now is run `build.py` to compile, collect and deploy your code.
