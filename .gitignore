@@ -101,6 +101,7 @@ __py_build__/
 *.pot
 docs/_build/
 *\ Notes.txt
+.mypy_cache
 
 # Unit test / coverage reports #
 ################################
