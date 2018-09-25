@@ -28,5 +28,4 @@ __all__ = [
     'js_isNaN',
     'js_global',
     '__except0__',
-    'Uint8Array',
 ]
