@@ -15,7 +15,7 @@ def js_isNaN(num: Union[float, int, str]) -> bool:
 class Uint8Array(Any):
     """
     WARNING: This is just here for autocompletion.
-    If anyone feels like typing this feel free :) - Lisp
+    If anyone feels like typing this go for it :) - Lisp
     """
 
 
