@@ -17,6 +17,10 @@ __pragma__('noalias', 'type')
 __pragma__('noalias', 'update')
 
 
+room: Room = Game.rooms['W51S1']
+room.getEventLog()
+
+
 def main():
     """
     Main game logic loop.
