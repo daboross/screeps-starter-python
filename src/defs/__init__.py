@@ -72,6 +72,7 @@ __all__ = [
     "FIND_HOSTILE_CONSTRUCTION_SITES",
     "FIND_MINERALS",
     "FIND_NUKES",
+    "FIND_TOMBSTONES",
 
     "TOP",
     "TOP_RIGHT",
@@ -367,6 +368,33 @@ __all__ = [
 
     "INVADERS_ENERGY_GOAL",
 
+    "SYSTEM_USERNAME",
+
+    "SIGN_NOVICE_AREA",
+    "SIGN_RESPAWN_AREA",
+    "SIGN_PLANNED_AREA",
+
+    "EVENT_ATTACK",
+    "EVENT_OBJECT_DESTROYED",
+    "EVENT_ATTACK_CONTROLLER",
+    "EVENT_BUILD",
+    "EVENT_HARVEST",
+    "EVENT_HEAL",
+    "EVENT_REPAIR",
+    "EVENT_RESERVE_CONTROLLER",
+    "EVENT_UPGRADE_CONTROLLER",
+    "EVENT_EXIT",
+
+    "EVENT_ATTACK_TYPE_MELEE",
+    "EVENT_ATTACK_TYPE_RANGED",
+    "EVENT_ATTACK_TYPE_RANGED_MASS",
+    "EVENT_ATTACK_TYPE_DISMANTLE",
+    "EVENT_ATTACK_TYPE_HIT_BACK",
+    "EVENT_ATTACK_TYPE_NUKE",
+
+    "EVENT_HEAL_TYPE_MELEE",
+    "EVENT_HEAL_TYPE_RANGED",
+
     "BODYPARTS_ALL",
 
     "RESOURCES_ALL",
@@ -391,6 +419,7 @@ __all__ = [
     "js_isNaN",
     'js_global',
     "__except0__",
+    "Uint8Array",
 ]
 
 __pragma__('noskip')

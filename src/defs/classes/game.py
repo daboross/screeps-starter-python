@@ -79,6 +79,9 @@ class _GameMap:
     def getRoomLinearDistance(self, roomName1: str, roomName2: str, terminalDistance: bool = False) -> int:
         pass
 
+    def getRoomTerrain(self, roomName: str) -> Room.Terrain:
+        pass
+
     def getTerrainAt(self, x: Union[int, RoomPosition], y: int = None, roomName: str = None) -> str:
         pass
 

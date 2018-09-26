@@ -40,6 +40,7 @@ FIND_MY_CONSTRUCTION_SITES = 114
 FIND_HOSTILE_CONSTRUCTION_SITES = 115
 FIND_MINERALS = 116
 FIND_NUKES = 117
+FIND_TOMBSTONES = 118
 
 # Direction constants
 TOP = 1
@@ -875,6 +876,35 @@ POWER_BANK_RESPAWN_TIME = 50000
 
 # Invader enery goal
 INVADERS_ENERGY_GOAL = 100000
+
+# Sign constants
+SYSTEM_USERNAME = 'Screeps'
+
+SIGN_NOVICE_AREA = 'A new Novice or Respawn Area is being planned somewhere in this sector. Please make sure all important rooms are reserved.'
+SIGN_RESPAWN_AREA = 'A new Novice or Respawn Area is being planned somewhere in this sector. Please make sure all important rooms are reserved.'
+SIGN_PLANNED_AREA = 'A new Novice or Respawn Area is being planned somewhere in this sector. Please make sure all important rooms are reserved.'
+
+# Room Event constants
+EVENT_ATTACK = 1
+EVENT_OBJECT_DESTROYED = 2
+EVENT_ATTACK_CONTROLLER = 3
+EVENT_BUILD = 4
+EVENT_HARVEST = 5
+EVENT_HEAL = 6
+EVENT_REPAIR = 7
+EVENT_RESERVE_CONTROLLER = 8
+EVENT_UPGRADE_CONTROLLER = 9
+EVENT_EXIT = 10
+
+EVENT_ATTACK_TYPE_MELEE = 1
+EVENT_ATTACK_TYPE_RANGED = 2
+EVENT_ATTACK_TYPE_RANGED_MASS = 3
+EVENT_ATTACK_TYPE_DISMANTLE = 4
+EVENT_ATTACK_TYPE_HIT_BACK = 5
+EVENT_ATTACK_TYPE_NUKE = 6
+
+EVENT_HEAL_TYPE_MELEE = 1
+EVENT_HEAL_TYPE_RANGED = 2
 
 # Sum constants
 BODYPARTS_ALL = [

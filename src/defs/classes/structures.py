@@ -253,6 +253,9 @@ class StructureLab(OwnedStructure):
     def runReaction(self, lab1: 'StructureLab', lab2: 'StructureLab') -> int:
         pass
 
+    def unboostCreep(self, creep: Creep) -> int:
+        pass
+
 
 # noinspection PyPep8Naming
 class StructureLink(OwnedStructure):
