@@ -143,7 +143,7 @@ def run_transcrypt(config):
     """
     transcrypt_executable = config.transcrypt_executable()
 
-    source_main = os.path.join(config.source_dir, 'main.py')
+    source_main = os.path.join(config.source_dir, 'main')
 
     if config.clean_build:
         cmd_args = transcrypt_clean_args
@@ -176,16 +176,19 @@ def copy_artifacts(config):
         else:
             raise
 
-    shutil.copyfile(os.path.join(config.source_dir, '__javascript__', 'main.js'),
-                    os.path.join(dist_directory, 'main.js'))
+    with os.scandir(os.path.join(config.source_dir, '__target__')) as scan:
+        for entry in scan:
+            if entry.is_file():
+                shutil.copy_file(entry.path, os.path.join(dist_directory, entry.name))
 
     js_directory = os.path.join(config.base_dir, 'js_files')
 
     if os.path.exists(js_directory) and os.path.isdir(js_directory):
-        for name in os.listdir(js_directory):
-            source = os.path.join(js_directory, name)
-            dest = os.path.join(dist_directory, name)
-            shutil.copy2(source, dest)
+        with os.scandir(js_directory) as scan:
+            for entry in scan:
+                source = scan.path
+                dest = os.path.join(dist_directory, scan.name)
+                shutil.copy2(source, dest)
 
 
 def build(config):
