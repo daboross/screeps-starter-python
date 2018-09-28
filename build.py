@@ -266,10 +266,19 @@ def install_env(config):
 
         if not os.path.exists(env_dir):
             print("creating virtualenv environment...")
-            if sys.version_info >= (3, 5):
-                args = ['virtualenv', '--system-site-packages', env_dir]
+
+            if sys.version_info >= (3, 7):
+                python_name = os.path.basename(sys.executable)
             else:
-                args = ['virtualenv', '-p', 'python3.5', '--system-site-packages', env_dir]
+                python_name = 'python3.7'
+
+            args = [
+                sys.executable,
+                '-m', 'virtualenv',
+                '-p', 'python3.7',
+                '--system-site-packages',
+                env_dir,
+            ]
 
             ret = subprocess.Popen(args, cwd=config.base_dir).wait()
 

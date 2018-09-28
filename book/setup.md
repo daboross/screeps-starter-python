@@ -7,10 +7,12 @@ transpile Python into JavaScript set up.
 The `./build.py` script does the majority of the work, from setting up a new environment to building/publishing the
 binary to the screeps server. However, you will need to install some dependencies:
 
-- `python-3.5` - Transcrypt works natively with Python 3.5, so you will need this version installed. Python 3.4 is more
-  widely available, but will not work for our purposes.
+- `python-3.7` - Transcrypt works natively with Python 3.7, so you will need this version installed.
+  - You can make `python-3.5` work, but you will need to use an older version of the transcrypt
+    interpreter. Modify `requirements.txt` to use `@screeps-transcrypt-0.1.12` rather than
+    `@screeps-transcrypt-0.1.14`.
 - `pip` - Make sure you have a Python 3.* version of `pip` installed as well. While `pip-3.4` is fine, you do need at
-  least that in order to make a `python-3.5` virtualenv. You can check your pip version with `pip --version`, and
+  least that in order to make a `python-3.7` virtualenv. You can check your pip version with `pip --version`, and
   depending on how it was installed, you may need to use `pip3`, `pip-3`, `pip3.4` or `pip-3.4` instead.
 
 After you have those set up, you'll need to install `virtualenv`:
@@ -42,7 +44,7 @@ rest of the guide must be entered in the terminal created by `Anaconda Prompt`.
 
 Enter the following commands in the order listed:
 
-  1. `conda create -n screeps python=3.5`
+  1. `conda create -n screeps python=3.7`
   2. `activate screeps`
   3. `conda install git`
   4. `conda install -c anaconda virtualenv`
