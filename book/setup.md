@@ -65,8 +65,7 @@ Post Installation Steps
 The last step to setting up `screeps-game-api` is to create and configure the build. This will allow `build.py` to
 upload files directly to the screeps server after building.
 
-Copy `config.default.json` into a file `config.json`, enter your username or email into the file, and enter your
-screeps (not steam) password in the file.
+Copy the contents of `config.default.json` into `config.json`. [Generate an auth-token](https://docs.screeps.com/auth-tokens.html#Using-Auth-Tokens) with full access rights through your screep's account management page.  Existing tokens with a matching access level can also be used.  Copy the token and paste it to the `token` key in `config.json`.
 
 Following that, you're all set up! `build.py` will automatically download and install the rest of the dependencies into
 a local environment when it is first run.
