@@ -67,6 +67,8 @@ upload files directly to the screeps server after building.
 
 Copy the contents of `config.default.json` into `config.json`. [Generate an auth-token](https://docs.screeps.com/auth-tokens.html#Using-Auth-Tokens) with full access rights through your screep's account management page.  Existing tokens with a matching access level can also be used.  Copy the token and paste it to the `token` key in `config.json`.
 
+Alternatively, you can use your username and password for authentication by removing the `token` entry, and adding `username` and `password` fields to `config.json`.
+
 Following that, you're all set up! `build.py` will automatically download and install the rest of the dependencies into
 a local environment when it is first run.
 
