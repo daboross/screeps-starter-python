@@ -68,6 +68,7 @@ class Configuration:
         :type config_json: dict[str, str | bool]
         """
         self.base_dir = base_dir
+        self.token = config_json.get('token')
         self.username = config_json.get('username') or config_json.get('email')
         self.password = config_json['password']
         self.branch = config_json.get('branch', 'default')
@@ -223,14 +224,14 @@ def upload(config):
 
     post_data = json.dumps({'modules': module_files, 'branch': config.branch}).encode('utf-8')
 
-    auth_pair = config.username.encode('utf-8') + b':' + config.password.encode('utf-8')
+    headers = {'Content-Type': b'application/json; charset=utf-8'}
+    if config.token:
+        headers['X-Token'] = config.token.encode('utf-8')
+    else:
+        auth_pair = config.username.encode('utf-8') + b':' + config.password.encode('utf-8')
+        headers['Authorization'] = b'Basic ' + base64.b64encode(auth_pair)
 
-    headers = {
-        'Content-Type': b'application/json; charset=utf-8',
-        'Authorization': b'Basic ' + base64.b64encode(auth_pair),
-    }
     request = urllib.request.Request(post_url, post_data, headers)
-
     if config.url != 'https://screeps.com':
         print("uploading files to {}, branch {}{}..."
               .format(config.url, config.branch, " on PTR" if config.ptr else ""))
