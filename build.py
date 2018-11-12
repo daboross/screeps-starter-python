@@ -70,7 +70,7 @@ class Configuration:
         self.base_dir = base_dir
         self.token = config_json.get('token')
         self.username = config_json.get('username') or config_json.get('email')
-        self.password = config_json['password']
+        self.password = config_json.get('password')
         self.branch = config_json.get('branch', 'default')
         self.url = config_json.get('url', 'https://screeps.com')
         self.ptr = config_json.get('ptr', False)
