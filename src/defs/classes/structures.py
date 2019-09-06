@@ -1,11 +1,11 @@
 from typing import Any, Dict, List, Optional, Union
 
-from .creep import Creep
+from defs.classes.creep import Creep
 # noinspection PyProtectedMember
-from .memory import _Memory
-from .misc_obj import RoomObject
+from defs.classes.memory import _Memory
+from defs.classes.misc_obj import RoomObject
 # noinspection PyProtectedMember
-from .room import Room, RoomPosition, _Owner
+from defs.classes.room import Room, RoomPosition, _Owner
 
 
 # noinspection PyPep8Naming

@@ -4,6 +4,8 @@ import harvester
 #  Game, etc. do exist.
 from defs import *
 
+import keeping_it_classy.gamezor as gamezor
+
 # These are currently required for Transcrypt in order to use the following names in JavaScript.
 # Without the 'noalias' pragma, each of the following would be translated into something like 'py_Infinity' or
 #  'py_keys' in the output file.
@@ -17,19 +19,23 @@ __pragma__('noalias', 'type')
 __pragma__('noalias', 'update')
 
 
+# the_gizzle = gamezor.Gamezor()
+
+
 def main():
     """
     Main game logic loop.
     """
 
     # Run each creep
-    for name in Object.keys(Game.creeps):
-        creep = Game.creeps[name]
+    for creep_name in Object.keys(Game.creeps):
+        creep = Game.creeps[creep_name]
+        print(creep_name)
         harvester.run_harvester(creep)
 
     # Run each spawn
-    for name in Object.keys(Game.spawns):
-        spawn = Game.spawns[name]
+    for spawn_name in Object.keys(Game.spawns):
+        spawn = Game.spawns[spawn_name]
         if not spawn.spawning:
             # Get the number of our creeps in the room.
             num_creeps = _.sum(Game.creeps, lambda c: c.pos.roomName == spawn.pos.roomName)
@@ -41,9 +47,9 @@ def main():
             elif num_creeps < 15 and spawn.room.energyAvailable >= spawn.room.energyCapacityAvailable:
                 # If we have more energy, spawn a bigger creep.
                 if spawn.room.energyCapacityAvailable >= 350:
-                    spawn.createCreep([WORK, CARRY, CARRY, MOVE, MOVE, MOVE])
+                    spawn.createCreep([WORK, CARRY, MOVE, MOVE, ATTACK])
                 else:
-                    spawn.createCreep([WORK, CARRY, MOVE, MOVE])
+                    spawn.createCreep([WORK, CARRY, MOVE, MOVE, ATTACK])
 
 
 module.exports.loop = main

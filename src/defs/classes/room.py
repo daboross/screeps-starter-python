@@ -1,10 +1,10 @@
 from typing import Any, Callable, Dict, List, Optional, Type, Union
 
 # noinspection PyProtectedMember
-from .memory import _Memory
-from .misc_obj import RoomObject
-from .structures import StructureController, StructureStorage, StructureTerminal
-from ..transcrypt import Uint8Array
+from defs.classes.memory import _Memory
+from defs.classes.misc_obj import RoomObject
+from defs.classes.structures import StructureController, StructureStorage, StructureTerminal
+from defs.transcrypt import Uint8Array
 
 _HasPosition = Union['RoomPosition', 'RoomObject']
 _FindParameter = Union[int, List[_HasPosition]]

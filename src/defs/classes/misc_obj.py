@@ -1,8 +1,8 @@
 # noinspection PyPep8Naming
 from typing import Optional, Type, Union
 
-from .memory import _Memory
-from .room import Room, RoomPosition
+from defs.classes.memory import _Memory
+from defs.classes.room import Room, RoomPosition
 
 
 class RoomObject:

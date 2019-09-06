@@ -1,10 +1,10 @@
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from .creep import Creep
-from .misc_obj import Flag, RoomObject
+from defs.classes.creep import Creep
+from defs.classes.misc_obj import Flag, RoomObject
 # noinspection PyProtectedMember
-from .room import Room, RoomPosition, _Owner
-from .structures import ConstructionSite, OwnedStructure, Structure, StructureSpawn
+from defs.classes.room import Room, RoomPosition, _Owner
+from defs.classes.structures import ConstructionSite, OwnedStructure, Structure, StructureSpawn
 
 
 # noinspection PyPep8Naming

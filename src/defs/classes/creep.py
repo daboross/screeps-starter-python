@@ -1,9 +1,9 @@
 from typing import Any, ClassVar, Dict, List, Optional, Union
 
-from .memory import _Memory
-from .misc_obj import Mineral, Resource, RoomObject, Source
-from .room import Room, RoomPosition, _Owner
-from .structures import ConstructionSite, Structure, StructureController
+from defs.classes.memory import _Memory
+from defs.classes.misc_obj import Mineral, Resource, RoomObject, Source
+from defs.classes.room import Room, RoomPosition, _Owner
+from defs.classes.structures import ConstructionSite, Structure, StructureController
 
 
 class _CreepPart:

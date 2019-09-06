@@ -12,10 +12,14 @@ __pragma__('noalias', 'update')
 
 def run_harvester(creep):
     """
-    Runs a creep as a generic harvester.
-    :param creep: The creep to run
-    """
 
+    Args:
+        creep (Creep):
+
+    Returns:
+
+    """
+    #print('poop')
     # If we're full, stop filling up and remove the saved source
     if creep.memory.filling and _.sum(creep.carry) >= creep.carryCapacity:
         creep.memory.filling = False
