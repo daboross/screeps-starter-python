@@ -41,6 +41,11 @@ FIND_HOSTILE_CONSTRUCTION_SITES = 115
 FIND_MINERALS = 116
 FIND_NUKES = 117
 FIND_TOMBSTONES = 118
+FIND_POWER_CREEPS = 119
+FIND_MY_POWER_CREEPS = 120
+FIND_HOSTILE_POWER_CREEPS = 121
+FIND_DEPOSITS = 122
+FIND_RUINS = 123
 
 # Direction constants
 TOP = 1
@@ -75,6 +80,9 @@ LOOK_FLAGS = "flag"
 LOOK_CONSTRUCTION_SITES = "constructionSite"
 LOOK_NUKES = "nuke"
 LOOK_TERRAIN = "terrain"
+LOOK_TOMBSTONES = "tombstone"
+LOOK_POWER_CREEPS = "powerCreep"
+LOOK_RUINS = "ruin"
 
 # Obstacle types
 OBSTACLE_OBJECT_TYPES = [
@@ -92,7 +100,9 @@ OBSTACLE_OBJECT_TYPES = [
     "powerBank",
     "lab",
     "terminal",
-    "nuker"
+    "nuker",
+    "factory",
+    "invaderCore"
 ]
 
 # Part constants
@@ -118,13 +128,15 @@ BODYPART_COST = {
 }
 
 # World constants
-WORLD_WIDTH = 142
-WORLD_HEIGHT = 142
+# WORLD_WIDTH and WORLD_HEIGHT constants are deprecated, please use Game.map.getWorldSize() instead
+WORLD_WIDTH = 202
+WORLD_HEIGHT = 202
 
 # Creep life constants
 CREEP_LIFE_TIME = 1500
 CREEP_CLAIM_LIFE_TIME = 500
 CREEP_CORPSE_RATE = 0.2
+CREEP_PART_MAX_ENERGY = 125
 
 # Power constants
 CARRY_CAPACITY = 50
@@ -226,6 +238,8 @@ STRUCTURE_LAB = "lab"
 STRUCTURE_TERMINAL = "terminal"
 STRUCTURE_CONTAINER = "container"
 STRUCTURE_NUKER = "nuker"
+STRUCTURE_FACTORY = "factory"
+STRUCTURE_INVADER_CORE = "invaderCore"
 
 # Construction cost constants
 CONSTRUCTION_COST = {
@@ -243,9 +257,11 @@ CONSTRUCTION_COST = {
     "lab": 50000,
     "terminal": 100000,
     "container": 5000,
-    "nuker": 100000
+    "nuker": 100000,
+    "factory": 100000
 }
 CONSTRUCTION_COST_ROAD_SWAMP_RATIO = 5
+CONSTRUCTION_COST_ROAD_WALL_RATIO = 150
 
 # Controller level structure constants
 CONTROLLER_LEVELS = {
@@ -410,20 +426,33 @@ CONTROLLER_STRUCTURES = {
         5: 0,
         6: 0,
         7: 0,
-        8: 1,
+        8: 1
+    },
+    "factory": {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 1,
+        8: 1
     }
 }
 CONTROLLER_DOWNGRADE = {
     1: 20000,
-    2: 5000,
-    3: 10000,
-    4: 20000,
-    5: 40000,
-    6: 60000,
-    7: 100000,
-    8: 150000,
+    2: 10000,
+    3: 20000,
+    4: 40000,
+    5: 80000,
+    6: 120000,
+    7: 150000,
+    8: 200000,
 }
-CONTROLLER_CLAIM_DOWNGRADE = 0.2
+CONTROLLER_DOWNGRADE_RESTORE = 100
+CONTROLLER_DOWNGRADE_SAFEMODE_THRESHOLD = 5000
+
+CONTROLLER_CLAIM_DOWNGRADE = 300
 # Noting especially here: CONTROLLER_RESERVE seemingly is the RESERVE_POWER constant, meaning it is how much reservation
 # a creep can do per CLAIM part per tick.
 CONTROLLER_RESERVE = 1
@@ -474,8 +503,10 @@ LAB_MINERAL_CAPACITY = 3000
 LAB_ENERGY_CAPACITY = 2000
 LAB_BOOST_ENERGY = 20
 LAB_BOOST_MINERAL = 30
-LAB_COOLDOWN = 10
+LAB_COOLDOWN = 10  # not used
 LAB_REACTION_AMOUNT = 5
+LAB_UNBOOST_ENERGY = 0
+LAB_UNBOOST_MINERAL = 15
 
 # GCL constants
 GCL_POW = 2.4
@@ -483,10 +514,8 @@ GCL_MULTIPLY = 1000000
 GCL_NOVICE = 3
 
 # Mode constants
-MODE_SIMULATION = "simulation"
-MODE_SURVIVAL = "survival"
-MODE_WORLD = "world"
-MODE_ARENA = "arena"
+MODE_SIMULATION = None
+MODE_WORLD = None
 
 # Terrain constants
 TERRAIN_MASK_WALL = 1
@@ -530,11 +559,16 @@ DENSITY_MODERATE = 2
 DENSITY_HIGH = 3
 DENSITY_ULTRA = 4
 
+DEPOSIT_EXHAUST_MULTIPLY = 0.001
+DEPOSIT_EXHAUST_POW = 1.2
+DEPOSIT_DECAY_TIME = 50000
+
 # Terminal constants
 TERMINAL_CAPACITY = 300000
 TERMINAL_HITS = 3000
 TERMINAL_SEND_COST = 0.1
 TERMINAL_MIN_SEND = 100
+TERMINAL_COOLDOWN = 10
 
 # Container constants
 CONTAINER_HITS = 250000
@@ -555,6 +589,17 @@ NUKE_DAMAGE = {
     2: 5000000
 }
 
+FACTORY_HITS = 1000
+FACTORY_CAPACITY = 50000
+
+TOMBSTONE_DECAY_PER_PART = 5
+TOMBSTONE_DECAY_POWER_CREEP = 500
+
+RUIN_DECAY = 500
+RUIN_DECAY_STRUCTURES = {
+    'powerBank': 10
+}
+
 # Portal constants
 PORTAL_DECAY = 30000
 
@@ -563,6 +608,9 @@ ORDER_SELL = "sell"
 ORDER_BUY = "buy"
 
 MARKET_FEE = 0.05
+
+MARKET_MAX_ORDERS = 300
+MARKET_ORDER_LIFE_TIME = 1000*60*60*24*30
 
 # Flag limit
 FLAGS_LIMIT = 10000
@@ -618,6 +666,50 @@ RESOURCE_CATALYZED_ZYNTHIUM_ACID = "XZH2O"
 RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE = "XZHO2"
 RESOURCE_CATALYZED_GHODIUM_ACID = "XGH2O"
 RESOURCE_CATALYZED_GHODIUM_ALKALIDE = "XGHO2"
+
+RESOURCE_OPS = "ops"
+
+RESOURCE_UTRIUM_BAR = 'utrium_bar'
+RESOURCE_LEMERGIUM_BAR = 'lemergium_bar'
+RESOURCE_ZYNTHIUM_BAR = 'zynthium_bar'
+RESOURCE_KEANIUM_BAR = 'keanium_bar'
+RESOURCE_GHODIUM_MELT = 'ghodium_melt'
+RESOURCE_OXIDANT = 'oxidant'
+RESOURCE_REDUCTANT = 'reductant'
+RESOURCE_PURIFIER = 'purifier'
+RESOURCE_BATTERY = 'battery'
+
+RESOURCE_COMPOSITE = 'composite'
+RESOURCE_CRYSTAL = 'crystal'
+RESOURCE_LIQUID = 'liquid'
+
+RESOURCE_WIRE = 'wire'
+RESOURCE_SWITCH = 'switch'
+RESOURCE_TRANSISTOR = 'transistor'
+RESOURCE_MICROCHIP = 'microchip'
+RESOURCE_CIRCUIT = 'circuit'
+RESOURCE_DEVICE = 'device'
+
+RESOURCE_CELL = 'cell'
+RESOURCE_PHLEGM = 'phlegm'
+RESOURCE_TISSUE = 'tissue'
+RESOURCE_MUSCLE = 'muscle'
+RESOURCE_ORGANOID = 'organoid'
+RESOURCE_ORGANISM = 'organism'
+
+RESOURCE_ALLOY = 'alloy'
+RESOURCE_TUBE = 'tube'
+RESOURCE_FIXTURES = 'fixtures'
+RESOURCE_FRAME = 'frame'
+RESOURCE_HYDRAULICS = 'hydraulics'
+RESOURCE_MACHINE = 'machine'
+
+RESOURCE_CONDENSATE = 'condensate'
+RESOURCE_CONCENTRATE = 'concentrate'
+RESOURCE_EXTRACT = 'extract'
+RESOURCE_SPIRIT = 'spirit'
+RESOURCE_EMANATION = 'emanation'
+RESOURCE_ESSENCE = 'essence'
 
 REACTIONS = {
     "H": {
@@ -755,13 +847,13 @@ REACTIONS = {
 BOOSTS = {
     "work": {
         "UO": {
-            "harvest": 4
+            "harvest": 3
         },
         "UHO2": {
-            "harvest": 6
+            "harvest": 5
         },
         "XUHO2": {
-            "harvest": 8
+            "harvest": 7
         },
         "LH": {
             "build": 1.5,
@@ -868,6 +960,43 @@ BOOSTS = {
     }
 }
 
+REACTION_TIME = {
+    'OH': 20,
+    'ZK': 5,
+    'UL': 5,
+    'G': 5,
+    'UH': 10,
+    'UH2O': 5,
+    'XUH2O': 60,
+    'UO': 10,
+    'UHO2': 5,
+    'XUHO2': 60,
+    'KH': 10,
+    'KH2O': 5,
+    'XKH2O': 60,
+    'KO': 10,
+    'KHO2': 5,
+    'XKHO2': 60,
+    'LH': 15,
+    'LH2O': 10,
+    'XLH2O': 65,
+    'LO': 10,
+    'LHO2': 5,
+    'XLHO2': 60,
+    'ZH': 20,
+    'ZH2O': 40,
+    'XZH2O': 160,
+    'ZO': 10,
+    'ZHO2': 5,
+    'XZHO2': 60,
+    'GH': 10,
+    'GH2O': 15,
+    'XGH2O': 80,
+    'GO': 10,
+    'GHO2': 30,
+    'XGHO2': 150,
+}
+
 # Portal constants
 PORTAL_UNSTABLE = 10 * 24 * 3600 * 1000
 PORTAL_MIN_TIMEOUT = 12 * 24 * 3600 * 1000
@@ -895,6 +1024,8 @@ EVENT_REPAIR = 7
 EVENT_RESERVE_CONTROLLER = 8
 EVENT_UPGRADE_CONTROLLER = 9
 EVENT_EXIT = 10
+EVENT_POWER = 11
+EVENT_TRANSFER = 12
 
 EVENT_ATTACK_TYPE_MELEE = 1
 EVENT_ATTACK_TYPE_RANGED = 2
@@ -905,6 +1036,63 @@ EVENT_ATTACK_TYPE_NUKE = 6
 
 EVENT_HEAL_TYPE_MELEE = 1
 EVENT_HEAL_TYPE_RANGED = 2
+
+POWER_LEVEL_MULTIPLY = 1000
+POWER_LEVEL_POW = 2
+POWER_CREEP_SPAWN_COOLDOWN = 8 * 3600 * 1000
+POWER_CREEP_DELETE_COOLDOWN = 24 * 3600 * 1000
+POWER_CREEP_MAX_LEVEL = 25
+POWER_CREEP_LIFE_TIME = 5000
+
+POWER_CLASS = {
+    "OPERATOR": 'operator'
+}
+
+PWR_GENERATE_OPS = 1
+PWR_OPERATE_SPAWN = 2
+PWR_OPERATE_TOWER = 3
+PWR_OPERATE_STORAGE = 4
+PWR_OPERATE_LAB = 5
+PWR_OPERATE_EXTENSION = 6
+PWR_OPERATE_OBSERVER = 7
+PWR_OPERATE_TERMINAL = 8
+PWR_DISRUPT_SPAWN = 9
+PWR_DISRUPT_TOWER = 10
+PWR_DISRUPT_SOURCE = 11
+PWR_SHIELD = 12
+PWR_REGEN_SOURCE = 13
+PWR_REGEN_MINERAL = 14
+PWR_DISRUPT_TERMINAL = 15
+PWR_OPERATE_POWER = 16
+PWR_FORTIFY = 17
+PWR_OPERATE_CONTROLLER = 18
+PWR_OPERATE_FACTORY = 19
+
+EFFECT_INVULNERABILITY = 1001
+EFFECT_COLLAPSE_TIMER = 1002
+
+INVADER_CORE_HITS = 1000000
+INVADER_CORE_CREEP_SPAWN_TIME = {
+    0: 0,
+    1: 0,
+    2: 6,
+    3: 3,
+    4: 2,
+    5: 1
+}
+INVADER_CORE_EXPAND_TIME = 15000
+INVADER_CORE_CONTROLLER_POWER = 100
+INVADER_CORE_CONTROLLER_DOWNGRADE = 5000
+
+STRONGHOLD_RAMPART_HITS = {
+    0: 0,
+    1: 50000,
+    2: 200000,
+    3: 500000,
+    4: 1000000,
+    5: 2000000
+}
+STRONGHOLD_DECAY_TICKS = 150000
 
 # Sum constants
 BODYPARTS_ALL = [
