@@ -1,20 +1,25 @@
 # noinspection PyPep8Naming
-from typing import Optional, Type, Union
+from typing import Optional, Type, Union, Dict
 
 from .memory import _Memory
 from .room import Room, RoomPosition
+from .structures import Structure
 
 
 class RoomObject:
     """
+    Any object with a position in a room. Almost all game objects prototypes are derived from RoomObject.
+
+    :type effects: [effect, level, ticksRemaining]
     :type pos: RoomPosition
     :type room: Room
     """
 
-    def __init__(self, pos: RoomPosition, room: Room) -> None:
+    def __init__(self, effects,  pos: RoomPosition, room: Room) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
+        self.effects = effects
         self.pos = pos
         self.room = room
 
@@ -24,22 +29,22 @@ class Flag(RoomObject):
     """
     :type room: Room | None
     :type color: int
-    :type secondaryColor: int
     :type memory: _Memory
     :type name: str
+    :type secondaryColor: int
     """
     prototype = None  # type: Type[Flag]
 
-    def __init__(self, pos: RoomPosition, room: Optional[Room], color: int, secondaryColor: int,
-                 memory: _Memory, name: str) -> None:
+    def __init__(self, pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory, name: str,
+                 secondaryColor: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room)
         self.color = color
-        self.secondaryColor = secondaryColor
         self.memory = memory
         self.name = name
+        self.secondaryColor = secondaryColor
 
     def remove(self) -> int:
         pass
@@ -89,12 +94,12 @@ class Mineral(RoomObject):
     :type ticksToRegeneration: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
+    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
                  _id: str, ticksToRegeneration: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
-        super().__init__(pos, room)
+        super().__init__(effects, pos, room)
         self.density = density
         self.mineralAmount = mineralAmount
         self.mineralType = mineralType
@@ -110,11 +115,34 @@ class Resource(RoomObject):
     :type resourceType: str
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, _id: str, amount: int, resourceType: str) -> None:
+    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Room, _id: str, amount: int, resourceType: str) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
-        super().__init__(pos, room)
+        super().__init__(effects, pos, room)
         self.id = _id
         self.amount = amount
         self.resourceType = resourceType
+
+
+# noinspection PyPep8Naming
+class Ruin(RoomObject):
+    """
+    :type destroyTime: int
+    :type id: str
+    :type store: dict[str, int]
+    :type _Structure: Structure
+    :type ticksToDecay: int
+    """
+
+    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
+                 store: Dict[str, int], _Structure: Structure, ticksToDecay: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        super().__init__(effects, pos, room)
+        self.destroyTime = destroyTime
+        self.id = _id
+        self.store = store
+        self.Structure = _Structure
+        self.ticksToDecay = ticksToDecay

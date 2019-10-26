@@ -1,4 +1,5 @@
 from typing import Any, Callable, Dict, List, Optional, Union
+import warnings
 
 from .creep import Creep
 from .misc_obj import Flag, RoomObject
@@ -66,6 +67,25 @@ class _GameGcl:
 
 
 # noinspection PyPep8Naming
+class _GameGpl:
+    """
+    Your Global Power Level, an object with the following properties :
+
+    :type level: int
+    :type progress: int
+    :type progressTotal: int
+    """
+
+    def __init__(self, level: int, progress: int, progressTotal: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.level = level
+        self.progress = progress
+        self.progressTotal = progressTotal
+
+
+# noinspection PyPep8Naming
 class _GameMap:
     def describeExits(self, roomName: str) -> Dict[int, str]:
         pass
@@ -83,6 +103,11 @@ class _GameMap:
         pass
 
     def getTerrainAt(self, x: Union[int, RoomPosition], y: int = None, roomName: str = None) -> str:
+        warnings.warn("This method is deprecated and will be removed soon. \n"
+                      "Please use a faster method Game.map.getRoomTerrain instead.", DeprecationWarning)
+        pass
+
+    def getWorldSize(self, roomName: str) -> int:
         pass
 
     def isRoomAvailable(self, roomName: str) -> bool:
@@ -167,6 +192,30 @@ class _MarketOrder:
 
 
 # noinspection PyPep8Naming
+class _MarketHistory:
+    """
+    :type resourceType: str
+    :type date: str
+    :type transactions: int
+    :type volume: int
+    :type avgPrice: float
+    :type stddevPrice: float
+    """
+
+    def __init__(self, resourceType: str, date: str, transactions: int, volume: int, avgPrice: float,
+                 stddevPrice: float) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.resourceType = resourceType
+        self.date = date
+        self.transactions = transactions
+        self.volume = volume
+        self.avgPrice = avgPrice
+        self.stddevPrice = stddevPrice
+
+
+# noinspection PyPep8Naming
 class _OwnedMarketOrder(_MarketOrder):
     """
     :type active: bool
@@ -225,6 +274,9 @@ class _GameMarket:
             -> List[_MarketOrder]:
         pass
 
+    def getHistory(self, resourceType: [str]) -> _MarketHistory:
+        pass
+
     def getOrderById(self, _id: str) -> _MarketOrder:
         pass
 
@@ -250,6 +302,7 @@ class Game:
     creeps = {}  # type: Dict[str, Creep]
     flags = {}  # type: Dict[str, Flag]
     gcl = None  # type: _GameGcl
+    gpl = None  # type: _GameGpl
     map = None  # type: _GameMap
     market = None  # type: _GameMarket
     resources = {}  # type: Dict[str, int]
