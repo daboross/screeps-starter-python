@@ -10,12 +10,12 @@ class RoomObject:
     """
     Any object with a position in a room. Almost all game objects prototypes are derived from RoomObject.
 
-    :type effects: [effect, level, ticksRemaining]
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type pos: RoomPosition
     :type room: Room
     """
 
-    def __init__(self, effects,  pos: RoomPosition, room: Room) -> None:
+    def __init__(self, effects: Dict[str, int],  pos: RoomPosition, room: Room) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
@@ -35,12 +35,14 @@ class Flag(RoomObject):
     """
     prototype = None  # type: Type[Flag]
 
-    def __init__(self, pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory, name: str,
-                 secondaryColor: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory,
+                 name: str, secondaryColor: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room)
+        self.effects = effects
+
         self.color = color
         self.memory = memory
         self.name = name

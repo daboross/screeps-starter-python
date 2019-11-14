@@ -1,3 +1,8 @@
+"""
+currently updated til the first Object.assign(exports, {}); part in the screeps doc.
+other part starting with POWER_INFO dont know how i should add so it's left untouched.
+"""
+
 # Error constants
 OK = 0
 ERR_NOT_OWNER = -1
