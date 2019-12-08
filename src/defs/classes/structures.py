@@ -1,9 +1,10 @@
 from typing import Any, Dict, List, Optional, Union
+import warnings
 
 from .creep import Creep
 # noinspection PyProtectedMember
 from .memory import _Memory
-from .misc_obj import RoomObject
+from .misc_obj import RoomObject, Store
 # noinspection PyProtectedMember
 from .room import Room, RoomPosition, _Owner
 
@@ -57,6 +58,7 @@ class OwnedStructure(Structure):
 # noinspection PyPep8Naming
 class ConstructionSite(RoomObject):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type id: str
     :type my: bool
     :type owner: _Owner
@@ -65,12 +67,13 @@ class ConstructionSite(RoomObject):
     :type structureType: str
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, _id: str, my: bool, owner: _Owner, progress: int,
-                 progressTotal: int, structureType: str) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room, _id: str, my: bool,
+                 owner: _Owner, progress: int, progressTotal: int, structureType: str) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room)
+        self.effects = effects
         self.id = _id
         self.my = my
         self.owner = owner
@@ -85,19 +88,23 @@ class ConstructionSite(RoomObject):
 # noinspection PyPep8Naming
 class StructureContainer(Structure):
     """
-    :type store: dict[str, int]
-    :type storeCapacity: int
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type store: Store()
     :type ticksToDecay: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 store: Dict[str, int], storeCapacity: int, ticksToDecay: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room, structureType: str,
+                 _id: str, hits: int, hitsMax: int, store: Store,
+                 # storeCapacity: int, - deprecated
+                 ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax)
+        self.effects = effects
         self.store = store
-        self.storeCapacity = storeCapacity
+        # deprecated
+        # self.storeCapacity = storeCapacity
         self.ticksToDecay = ticksToDecay
 
 
@@ -137,6 +144,7 @@ class _ControllerSign:
 # noinspection PyPep8Naming
 class StructureController(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type level: int
     :type progress: int
     :type progressTotal: int
@@ -149,14 +157,17 @@ class StructureController(OwnedStructure):
     :type upgradeBlocked: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int, my: bool,
-                 owner: _Owner, level: int, progress: int, progressTotal: int, reservation: Optional[_RoomReservation],
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room, structureType: str,
+                 _id: str, hits: int, hitsMax: int, my: bool, owner: _Owner, isPowerEnabled: bool,
+                 level: int, progress: int, progressTotal: int, reservation: Optional[_RoomReservation],
                  safeMode: int, safeModeAvailable: int, safeModeCooldown: int, sign: Optional[_ControllerSign],
                  ticksToDowngrade: int, upgradeBlocked: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
+        self.isPowerEnabled = isPowerEnabled
         self.level = level
         self.progress = progress
         self.progressTotal = progressTotal
@@ -168,7 +179,7 @@ class StructureController(OwnedStructure):
         self.ticksToDowngrade = ticksToDowngrade
         self.upgradeBlocked = upgradeBlocked
 
-    def activateSafemode(self) -> int:
+    def activateSafeMode(self) -> int:
         pass
 
     def unclaim(self) -> int:
@@ -178,74 +189,131 @@ class StructureController(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureExtension(OwnedStructure):
     """
-    :type energy: int
-    :type energyCapacity: int
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type store: Store()
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int, energyCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room, structureType: str,
+                 _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner,  # energy: int, energyCapacity: int
+                 store: Store
+                 ) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
-        self.energy = energy
-        self.energyCapacity = energyCapacity
+        self.effects = effects
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
+        self.store = store
 
 
 # noinspection PyPep8Naming
 class StructureExtractor(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type cooldown: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner, cooldown: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.cooldown = cooldown
+
+
+# noinspection PyPep8Naming
+class StructureFactory(OwnedStructure):
+    """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type cooldown: int
+    :type level: int
+    :type store: Store
+    """
+
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, level: int,  cooldown: int,
+                 store: Store) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
+        self.cooldown = cooldown
+        self.level = level
+        self.store = store
+
+        def produce(self, resourceType: str) -> int:
+            pass
+
+
+# noinspection PyPep8Naming
+class StructureInvaderCore(OwnedStructure):
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, level: int, ticksToDeploy: int) -> None:
+        super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
+        self.level = level
+        self.ticksToDeploy = ticksToDeploy
+
+    """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type level: int
+    :type ticksToDeploy: int
+    """
 
 
 # noinspection PyPep8Naming
 class StructureKeeperLair(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type ticksToSpawn: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner, ticksToSpawn: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.ticksToSpawn = ticksToSpawn
 
 
 # noinspection PyPep8Naming
 class StructureLab(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type cooldown: int
-    :type energy: int
-    :type energyCapacity: int
-    :type mineralAmount: int
     :type mineralType: Optional[str]
-    :type mineralCapacity: int
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int, energy: int, energyCapacity: int, mineralAmount: int,
-                 mineralType: Optional[str], mineralCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, cooldown: int,  #energy: int, energyCapacity: int, mineralAmount: int,
+                 mineralType: Optional[str], store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.cooldown = cooldown
-        self.energy = energy
-        self.energyCapacity = energyCapacity
-        self.mineralAmount = mineralAmount
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
+        # self.mineralAmount = mineralAmount
         self.mineralType = mineralType
-        self.mineralCapacity = mineralCapacity
+        # self.mineralCapacity = mineralCapacity
+        self.store = store
 
     def boostCreep(self, creep: Creep, bodyPartsCount: Optional[int] = None) -> int:
         pass
@@ -260,20 +328,25 @@ class StructureLab(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureLink(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type cooldown: int
-    :type energy: int
-    :type energyCapacity: int
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int, energy: int, energyCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, cooldown: int,  #energy: int, energyCapacity: int
+                 store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.cooldown = cooldown
-        self.energy = energy
-        self.energyCapacity = energyCapacity
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
+        self.store = store
 
     def transferEnergy(self, target: 'StructureLink', amount: int = 0) -> int:
         pass
@@ -282,25 +355,31 @@ class StructureLink(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureNuker(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type energy: int
     :type energyCapacity: int
     :type ghodium: int
     :type ghodiumCapacity: int
     :type cooldown: int
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int, energyCapacity: int, ghodium: int, ghodiumCapacity: int,
-                 cooldown: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, energy: int,  # energyCapacity: int, ghodium: int, ghodiumCapacity: int,
+                 cooldown: int, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.energy = energy
-        self.energyCapacity = energyCapacity
-        self.ghodium = ghodium
-        self.ghodiumCapacity = ghodiumCapacity
+        # deprecated
+        # self.energyCapacity = energyCapacity
+        # self.ghodium = ghodium
+        # self.ghodiumCapacity = ghodiumCapacity
         self.cooldown = cooldown
+        self.store = store
 
     def launchNuke(self, pos: RoomPosition) -> int:
         pass
@@ -308,6 +387,16 @@ class StructureNuker(OwnedStructure):
 
 # noinspection PyPep8Naming
 class StructureObserver(OwnedStructure):
+    """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    """
+
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner) -> None:
+        super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
+
     def observeRoom(self, roomName: str) -> int:
         pass
 
@@ -315,16 +404,19 @@ class StructureObserver(OwnedStructure):
 # noinspection PyPep8Naming
 class StructurePowerBank(Structure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type power: int
     :type ticksToDecay: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  power: int, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax)
+        self.effects = effects
         self.power = power
         self.ticksToDecay = ticksToDecay
 
@@ -332,28 +424,34 @@ class StructurePowerBank(Structure):
 # noinspection PyPep8Naming
 class StructurePowerSpawn(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type energy: int
     :type energyCapacity: int
     :type power: int
     :type powerCapacity: int
     :type cooldown: int
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner, energy: int, energyCapacity: int, power: int, powerCapacity: int,
-                 cooldown: int) -> None:
+                 cooldown: int, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
-        self.energy = energy
-        self.energyCapacity = energyCapacity
-        self.power = power
-        self.powerCapacity = powerCapacity
-        self.cooldown = cooldown
-
-    def createPowerCreep(self, name: str) -> int:
-        pass
+        self.effects = effects
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
+        # self.power = power
+        # self.powerCapacity = powerCapacity
+        # self.cooldown = cooldown
+        self.store = store
+    # erased from docs?
+    # def createPowerCreep(self, name: str) -> int:
+    #     pass
 
     def processPower(self) -> int:
         pass
@@ -376,16 +474,19 @@ class _ShardPortalDestination:
 # noinspection PyPep8Naming
 class StructurePortal(Structure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type destination: Union[RoomPosition, _ShardPortalDestination]
     :type ticksToDecay: Optional[int]
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  destination: Union[RoomPosition, _ShardPortalDestination], ticksToDecay: Optional[int]) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax)
+        self.effects = effects
         self.destination = destination
         self.ticksToDecay = ticksToDecay
 
@@ -393,16 +494,19 @@ class StructurePortal(Structure):
 # noinspection PyPep8Naming
 class StructureRampart(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type isPublic: bool
     :type ticksToDecay: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner, isPublic: bool, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.isPublic = isPublic
         self.ticksToDecay = ticksToDecay
 
@@ -413,48 +517,80 @@ class StructureRampart(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureRoad(Structure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type ticksToDecay: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
                  ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax)
+        self.effects = effects
         self.ticksToDecay = ticksToDecay
 
 
+# noinspection PyPep8Naming
 class _SpawnSpawningCreep:
-    pass
+    """
+    :type directions: List[int]
+    :type name: str
+    :type needTime: int
+    :type remainingTime: int
+    :type spawn: StructureSpawn
+    """
+    def __init__(self, directions: List[int], name: str, needTime: int, remainingTime: int, spawn: str):
+        self.directions = directions
+        self.name = name
+        self.needTime = needTime
+        self.remainingTime = remainingTime
+        self.spawn = spawn
+
+    def cancel(self) -> int:
+        pass
+
+    def setDirections(self, directions: List[int]) -> int:
+        pass
 
 
 # noinspection PyPep8Naming
 class StructureSpawn(OwnedStructure):
     """
-    :type energy: int
-    :type energyCapacity: int
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type memory: _Memory
     :type name: str
     :type spawning: Optional[_SpawnSpawningCreep]
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int, energyCapacity: int, memory: _Memory, name: str,
-                 spawning: Optional[_SpawnSpawningCreep]) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner,  # energy: int, energyCapacity: int,
+                 memory: _Memory, name: str,
+                 spawning: Optional[_SpawnSpawningCreep],
+                 store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
-        self.energy = energy
-        self.energyCapacity = energyCapacity
+        self.effects = effects
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
         self.memory = memory
         self.name = name
         self.spawning = spawning
+        self.store = store
 
+    @warnings.warn('This method is deprecated and will be removed soon.'
+                   ' Please use StructureSpawn.spawnCreep with dryRun flag instead.', DeprecationWarning)
     def canCreateCreep(self, body: List[str], name: Optional[str] = None) -> int:
         pass
 
+    @warnings.warn('This method is deprecated and will be removed soon.'
+                   ' Please use StructureSpawn.spawnCreep instead.', DeprecationWarning)
     def createCreep(self, body: List[str], name: Optional[str] = None, memory: Optional[Dict[str, Any]] = None) \
             -> Union[int, str]:
         pass
@@ -472,37 +608,45 @@ class StructureSpawn(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureStorage(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type store: dict[str, int]
-    :type storeCapacity: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, store: Dict[str, int], storeCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, store: Dict[str, int]  # , storeCapacity: int
+                 ) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.store = store
-        self.storeCapacity = storeCapacity
+        # deprecated
+        # self.storeCapacity = storeCapacity
 
 
 # noinspection PyPep8Naming
 class StructureTerminal(OwnedStructure):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type cooldown: int
     :type store: dict[str, int]
-    :type storeCapacity: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int, store: Dict[str, int], storeCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner, cooldown: int, store: Dict[str, int]  # , storeCapacity: int
+                ) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
+        self.effects = effects
         self.cooldown = cooldown
         self.store = store  # type: Dict[str, int]
-        self.storeCapacity = storeCapacity
+        # deprecated
+        # self.storeCapacity = storeCapacity
 
     def send(self, resourceType: str, amount: Union[int, float], destination: str, description: str = None) -> int:
         pass
@@ -511,18 +655,23 @@ class StructureTerminal(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureTower(OwnedStructure):
     """
-    :type energy: int
-    :type energyCapacity: int
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type store: Store
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int, energyCapacity: int) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int,
+                 my: bool, owner: _Owner,  # energy: int, energyCapacity: int
+                 store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax, my, owner)
-        self.energy = energy
-        self.energyCapacity = energyCapacity
+        self.effects = effects
+        # deprecated
+        # self.energy = energy
+        # self.energyCapacity = energyCapacity
+        self.store = store
 
     def attack(self, target: Creep) -> int:
         pass
@@ -537,13 +686,13 @@ class StructureTower(OwnedStructure):
 # noinspection PyPep8Naming
 class StructureWall(Structure):
     """
-    :type ticksToDecay: Optional[int]
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     """
 
-    def __init__(self, pos: RoomPosition, room: Room, structureType: str, _id: str, hits: int, hitsMax: int,
-                 ticksToDecay: Optional[int]) -> None:
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Room,
+                 structureType: str, _id: str, hits: int, hitsMax: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(pos, room, structureType, _id, hits, hitsMax)
-        self.ticksToDecay = ticksToDecay
+        self.effects = effects

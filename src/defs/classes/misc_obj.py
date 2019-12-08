@@ -4,6 +4,25 @@ from typing import Optional, Type, Union, Dict
 from .memory import _Memory
 from .room import Room, RoomPosition
 from .structures import Structure
+from .creep import Creep
+
+
+# uncertain if this would be used or not tbh...
+class _Effects:
+    """
+    Applied effects, an array of objects with the following properties
+
+    :type effect: int
+    :type level: int
+    :type ticksRemaining: int
+    """
+    def __init__(self, effect: int, level: Optional[int], ticksRemaining: int):
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.effect = effect
+        self.level = level
+        self.ticksRemaining = ticksRemaining
 
 
 class RoomObject:
@@ -27,6 +46,7 @@ class RoomObject:
 # noinspection PyPep8Naming
 class Flag(RoomObject):
     """
+    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
     :type room: Room | None
     :type color: int
     :type memory: _Memory
@@ -117,7 +137,8 @@ class Resource(RoomObject):
     :type resourceType: str
     """
 
-    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Room, _id: str, amount: int, resourceType: str) -> None:
+    def __init__(self, effects: RoomPosition, pos: RoomPosition,
+                 room: Room, _id: str, amount: int, resourceType: str) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
@@ -125,6 +146,21 @@ class Resource(RoomObject):
         self.id = _id
         self.amount = amount
         self.resourceType = resourceType
+
+
+# noinspection PyPep8Naming
+class Store:
+    """
+    WARNING: This constructor is purely for type completion, and does not exist in the game.
+    """
+    def getCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+        pass
+
+    def getFreeCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+        pass
+
+    def getUsedCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+        pass
 
 
 # noinspection PyPep8Naming
@@ -137,7 +173,7 @@ class Ruin(RoomObject):
     :type ticksToDecay: int
     """
 
-    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
                  store: Dict[str, int], _Structure: Structure, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -147,4 +183,28 @@ class Ruin(RoomObject):
         self.id = _id
         self.store = store
         self.Structure = _Structure
+        self.ticksToDecay = ticksToDecay
+
+
+# noinspection PyPep8Naming
+class Tombstone(RoomObject):
+    """
+    :type deathTime: int
+    :type id: str
+    :type store: dict[str, int]
+    :type _Structure: Structure
+    :type ticksToDecay: int
+    """
+
+    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room],
+                 creep: Creep, deathTime: int, _id: str,
+                 store: Store, ticksToDecay: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        super().__init__(effects, pos, room)
+        self.creep = creep
+        self.deathTime = deathTime
+        self.id = _id
+        self.store = store
         self.ticksToDecay = ticksToDecay

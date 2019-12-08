@@ -11,66 +11,6 @@ _FindParameter = Union[int, List[_HasPosition]]
 
 
 # noinspection PyPep8Naming
-class RoomPosition:
-    """
-    :type x: int
-    :type y: int
-    :type roomName: str
-    :type prototype: Type[RoomPosition]
-    """
-    prototype = None  # type: Type[RoomPosition]
-
-    def __init__(self, x: int, y: int, roomName: str) -> None:
-        """
-        NOTE: In order to use this, you must surround it with `__new__`: `__new__(RoomPosition(x, y, roomName))`
-        """
-        self.x = x
-        self.y = y
-        self.roomName = roomName
-
-    def createConstructionSite(self, structureType: str) -> int:
-        pass
-
-    def createFlag(self, name: str = None, color: int = None, secondaryColor: int = None) -> Union[str, int]:
-        pass
-
-    def findClosestByPath(self, source: _FindParameter, opts: Optional[Dict[str, Any]] = None) -> Optional[RoomObject]:
-        pass
-
-    def findClosestByRange(self, source: _FindParameter, opts: Optional[Dict[str, Any]] = None) -> Optional[RoomObject]:
-        pass
-
-    def findInRange(self, source: _FindParameter, _range: int, opts: Optional[Dict[str, Any]] = None) \
-            -> List[RoomObject]:
-        pass
-
-    def getDirectionTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> int:
-        pass
-
-    def getRangeTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> int:
-        pass
-
-    def inRangeTo(self, x: Union[int, 'RoomPosition', RoomObject], y_or_range: int = None,
-                  _range: int = None) -> bool:
-        pass
-
-    def isEqualTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> bool:
-        pass
-
-    def isNearTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> bool:
-        pass
-
-    def look(self) -> List[Dict[str, Any]]:
-        pass
-
-    def lookFor(self, _type: str) -> List[RoomObject]:
-        pass
-
-
-RoomPosition.prototype = RoomPosition
-
-
-# noinspection PyPep8Naming
 class _Event:
     """
     :type event: int
@@ -117,6 +57,70 @@ class _PathPos:
         self.dx = dx
         self.dy = dy
         self.direction = direction
+
+
+# noinspection PyPep8Naming
+class RoomPosition:
+    """
+    :type x: int
+    :type y: int
+    :type roomName: str
+    :type prototype: Type[RoomPosition]
+    """
+    prototype = None  # type: Type[RoomPosition]
+
+    def __init__(self, x: int, y: int, roomName: str) -> None:
+        """
+        NOTE: In order to use this, you must surround it with `__new__`: `__new__(RoomPosition(x, y, roomName))`
+        """
+        self.x = x
+        self.y = y
+        self.roomName = roomName
+
+    def createConstructionSite(self, structureType: str) -> int:
+        pass
+
+    def createFlag(self, name: str = None, color: int = None, secondaryColor: int = None) -> Union[str, int]:
+        pass
+
+    def findClosestByPath(self, source: _FindParameter, opts: Optional[Dict[str, Any]] = None) -> Optional[RoomObject]:
+        pass
+
+    def findClosestByRange(self, source: _FindParameter, opts: Optional[Dict[str, Any]] = None) -> Optional[RoomObject]:
+        pass
+
+    def findInRange(self, source: _FindParameter, _range: int, opts: Optional[Dict[str, Any]] = None) \
+            -> List[RoomObject]:
+        pass
+
+    def findPathTo(self, source: _FindParameter, opts: Optional[Dict[str, Any]] = None) \
+            -> List[_PathPos]:
+        pass
+
+    def getDirectionTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> int:
+        pass
+
+    def getRangeTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> int:
+        pass
+
+    def inRangeTo(self, x: Union[int, 'RoomPosition', RoomObject], y_or_range: int = None,
+                  _range: int = None) -> bool:
+        pass
+
+    def isEqualTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> bool:
+        pass
+
+    def isNearTo(self, x: Union[int, 'RoomPosition', RoomObject], y: int = None) -> bool:
+        pass
+
+    def look(self) -> List[Dict[str, Any]]:
+        pass
+
+    def lookFor(self, _type: str) -> List[RoomObject]:
+        pass
+
+
+RoomPosition.prototype = RoomPosition
 
 
 # noinspection PyPep8Naming
