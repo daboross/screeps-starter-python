@@ -7,7 +7,7 @@ from .structures import Structure
 from .creep import Creep
 
 
-# uncertain if this would be used or not tbh...
+# noinspection PyPep8Naming
 class _Effects:
     """
     Applied effects, an array of objects with the following properties
@@ -25,16 +25,17 @@ class _Effects:
         self.ticksRemaining = ticksRemaining
 
 
+# noinspection PyPep8Naming
 class RoomObject:
     """
     Any object with a position in a room. Almost all game objects prototypes are derived from RoomObject.
 
-    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type effects: _Effects
     :type pos: RoomPosition
     :type room: Room
     """
 
-    def __init__(self, effects: Dict[str, int],  pos: RoomPosition, room: Room) -> None:
+    def __init__(self, effects: _Effects,  pos: RoomPosition, room: Room) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
@@ -46,7 +47,7 @@ class RoomObject:
 # noinspection PyPep8Naming
 class Flag(RoomObject):
     """
-    :type effects: {'effect': int, (optional)'level': int, 'ticksRemaining': int}
+    :type effects: _Effects
     :type room: Room | None
     :type color: int
     :type memory: _Memory
@@ -55,14 +56,12 @@ class Flag(RoomObject):
     """
     prototype = None  # type: Type[Flag]
 
-    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory,
+    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory,
                  name: str, secondaryColor: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
-        super().__init__(pos, room)
-        self.effects = effects
-
+        super().__init__(effects, pos, room)
         self.color = color
         self.memory = memory
         self.name = name
@@ -94,12 +93,12 @@ class Source(RoomObject):
     :type ticksToRegeneration: int
     """
 
-    def __init__(self, pos: RoomPosition, room: Optional[Room], energy: int, energyCapacity: int, _id: str,
+    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], energy: int, energyCapacity: int, _id: str,
                  ticksToRegeneration: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
-        super().__init__(pos, room)
+        super().__init__(effects, pos, room)
         self.energy = energy
         self.energyCapacity = energyCapacity
         self.id = _id
@@ -116,7 +115,7 @@ class Mineral(RoomObject):
     :type ticksToRegeneration: int
     """
 
-    def __init__(self, effects: RoomPosition, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
+    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
                  _id: str, ticksToRegeneration: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -137,7 +136,7 @@ class Resource(RoomObject):
     :type resourceType: str
     """
 
-    def __init__(self, effects: RoomPosition, pos: RoomPosition,
+    def __init__(self, effects: _Effects, pos: RoomPosition,
                  room: Room, _id: str, amount: int, resourceType: str) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -173,7 +172,7 @@ class Ruin(RoomObject):
     :type ticksToDecay: int
     """
 
-    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
+    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
                  store: Dict[str, int], _Structure: Structure, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -196,7 +195,7 @@ class Tombstone(RoomObject):
     :type ticksToDecay: int
     """
 
-    def __init__(self, effects: Dict[str, int], pos: RoomPosition, room: Optional[Room],
+    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room],
                  creep: Creep, deathTime: int, _id: str,
                  store: Store, ticksToDecay: int) -> None:
         """
