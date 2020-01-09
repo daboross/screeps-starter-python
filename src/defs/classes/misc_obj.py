@@ -1,5 +1,5 @@
 # noinspection PyPep8Naming
-from typing import Optional, Type, Union, Dict
+from typing import Optional, Type, Union, Dict, List
 
 from .memory import _Memory
 from .room import Room, RoomPosition
@@ -8,7 +8,7 @@ from .creep import Creep
 
 
 # noinspection PyPep8Naming
-class _Effects:
+class _Effect:  # type: List[_Effect]
     """
     Applied effects, an array of objects with the following properties
 
@@ -25,17 +25,20 @@ class _Effects:
         self.ticksRemaining = ticksRemaining
 
 
+_Effect = List[_Effect]
+
+
 # noinspection PyPep8Naming
 class RoomObject:
     """
     Any object with a position in a room. Almost all game objects prototypes are derived from RoomObject.
 
-    :type effects: _Effects
+    :type effects: _Effect
     :type pos: RoomPosition
     :type room: Room
     """
 
-    def __init__(self, effects: _Effects,  pos: RoomPosition, room: Room) -> None:
+    def __init__(self, effects: _Effect,  pos: RoomPosition, room: Room) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
@@ -47,7 +50,7 @@ class RoomObject:
 # noinspection PyPep8Naming
 class Flag(RoomObject):
     """
-    :type effects: _Effects
+    :type effects: _Effect
     :type room: Room | None
     :type color: int
     :type memory: _Memory
@@ -56,7 +59,7 @@ class Flag(RoomObject):
     """
     prototype = None  # type: Type[Flag]
 
-    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory,
+    def __init__(self, effects: _Effect, pos: RoomPosition, room: Optional[Room], color: int, memory: _Memory,
                  name: str, secondaryColor: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -93,7 +96,7 @@ class Source(RoomObject):
     :type ticksToRegeneration: int
     """
 
-    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], energy: int, energyCapacity: int, _id: str,
+    def __init__(self, effects: _Effect, pos: RoomPosition, room: Optional[Room], energy: int, energyCapacity: int, _id: str,
                  ticksToRegeneration: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -115,7 +118,7 @@ class Mineral(RoomObject):
     :type ticksToRegeneration: int
     """
 
-    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
+    def __init__(self, effects: _Effect, pos: RoomPosition, room: Optional[Room], density: int, mineralAmount: int, mineralType: str,
                  _id: str, ticksToRegeneration: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -136,7 +139,7 @@ class Resource(RoomObject):
     :type resourceType: str
     """
 
-    def __init__(self, effects: _Effects, pos: RoomPosition,
+    def __init__(self, effects: _Effect, pos: RoomPosition,
                  room: Room, _id: str, amount: int, resourceType: str) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -172,7 +175,7 @@ class Ruin(RoomObject):
     :type ticksToDecay: int
     """
 
-    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
+    def __init__(self, effects: _Effect, pos: RoomPosition, room: Optional[Room], destroyTime: int, _id: str,
                  store: Dict[str, int], _Structure: Structure, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
@@ -195,7 +198,7 @@ class Tombstone(RoomObject):
     :type ticksToDecay: int
     """
 
-    def __init__(self, effects: _Effects, pos: RoomPosition, room: Optional[Room],
+    def __init__(self, effects: _Effect, pos: RoomPosition, room: Optional[Room],
                  creep: Creep, deathTime: int, _id: str,
                  store: Store, ticksToDecay: int) -> None:
         """
