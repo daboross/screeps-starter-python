@@ -90,21 +90,17 @@ class ConstructionSite(RoomObject):
 class StructureContainer(Structure):
     """
     :type effects: _Effect
-    :type store: Store()
+    :type store: Store
     :type ticksToDecay: int
     """
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room, structureType: str,
-                 _id: str, hits: int, hitsMax: int, store: Store,
-                 # storeCapacity: int, - deprecated
-                 ticksToDecay: int) -> None:
+                 _id: str, hits: int, hitsMax: int, store: Store, ticksToDecay: int) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax)
         self.store = store
-        # deprecated
-        # self.storeCapacity = storeCapacity
         self.ticksToDecay = ticksToDecay
 
 
@@ -194,16 +190,11 @@ class StructureExtension(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room, structureType: str,
                  _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner,  # energy: int, energyCapacity: int
-                 store: Store
-                 ) -> None:
+                 my: bool, owner: _Owner, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
         self.store = store
 
 
@@ -221,7 +212,6 @@ class StructureExtractor(OwnedStructure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.cooldown = cooldown
 
 
@@ -242,7 +232,6 @@ class StructureFactory(OwnedStructure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.cooldown = cooldown
         self.level = level
         self.store = store
@@ -257,7 +246,6 @@ class StructureInvaderCore(OwnedStructure):
                  structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner, level: int, ticksToDeploy: int) -> None:
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.level = level
         self.ticksToDeploy = ticksToDeploy
 
@@ -282,7 +270,6 @@ class StructureKeeperLair(OwnedStructure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.ticksToSpawn = ticksToSpawn
 
 
@@ -297,23 +284,20 @@ class StructureLab(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int,  #energy: int, energyCapacity: int, mineralAmount: int,
+                 my: bool, owner: _Owner, cooldown: int,
                  mineralType: Optional[str], store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.cooldown = cooldown
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
-        # self.mineralAmount = mineralAmount
         self.mineralType = mineralType
-        # self.mineralCapacity = mineralCapacity
         self.store = store
 
     def boostCreep(self, creep: Creep, bodyPartsCount: Optional[int] = None) -> int:
+        pass
+
+    def reverseReaction(self, lab1: 'StructureLab', lab2: 'StructureLab') -> int:
         pass
 
     def runReaction(self, lab1: 'StructureLab', lab2: 'StructureLab') -> int:
@@ -333,17 +317,12 @@ class StructureLink(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int,  #energy: int, energyCapacity: int
-                 store: Store) -> None:
+                 my: bool, owner: _Owner, cooldown: int, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.cooldown = cooldown
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
         self.store = store
 
     def transferEnergy(self, target: 'StructureLink', amount: int = 0) -> int:
@@ -354,28 +333,17 @@ class StructureLink(OwnedStructure):
 class StructureNuker(OwnedStructure):
     """
     :type effects: _Effect
-    :type energy: int
-    :type energyCapacity: int
-    :type ghodium: int
-    :type ghodiumCapacity: int
-    :type cooldown: int
     :type store: Store
     """
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int,  # energyCapacity: int, ghodium: int, ghodiumCapacity: int,
-                 cooldown: int, store: Store) -> None:
+                 my: bool, owner: _Owner, energy: int, cooldown: int, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.energy = energy
-        # deprecated
-        # self.energyCapacity = energyCapacity
-        # self.ghodium = ghodium
-        # self.ghodiumCapacity = ghodiumCapacity
         self.cooldown = cooldown
         self.store = store
 
@@ -393,7 +361,6 @@ class StructureObserver(OwnedStructure):
                  structureType: str, _id: str, hits: int, hitsMax: int,
                  my: bool, owner: _Owner) -> None:
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
 
     def observeRoom(self, roomName: str) -> int:
         pass
@@ -414,7 +381,6 @@ class StructurePowerBank(Structure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax)
-        # self.effects = effects
         self.power = power
         self.ticksToDecay = ticksToDecay
 
@@ -433,20 +399,13 @@ class StructurePowerSpawn(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, energy: int, energyCapacity: int, power: int, powerCapacity: int,
-                 cooldown: int, store: Store) -> None:
+                 my: bool, owner: _Owner, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
-        # self.power = power
-        # self.powerCapacity = powerCapacity
-        # self.cooldown = cooldown
         self.store = store
+
     # erased from docs?
     # def createPowerCreep(self, name: str) -> int:
     #     pass
@@ -484,7 +443,7 @@ class StructurePortal(Structure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax)
-        # self.effects = effects
+
         self.destination = destination
         self.ticksToDecay = ticksToDecay
 
@@ -504,7 +463,6 @@ class StructureRampart(OwnedStructure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.isPublic = isPublic
         self.ticksToDecay = ticksToDecay
 
@@ -526,7 +484,7 @@ class StructureRoad(Structure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax)
-        # self.effects = effects
+
         self.ticksToDecay = ticksToDecay
 
 
@@ -539,6 +497,7 @@ class _SpawnSpawningCreep:
     :type remainingTime: int
     :type spawn: StructureSpawn
     """
+
     def __init__(self, directions: List[int], name: str, needTime: int, remainingTime: int, spawn: str):
         self.directions = directions
         self.name = name
@@ -573,10 +532,6 @@ class StructureSpawn(OwnedStructure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
         self.memory = memory
         self.name = name
         self.spawning = spawning
@@ -607,21 +562,17 @@ class StructureSpawn(OwnedStructure):
 class StructureStorage(OwnedStructure):
     """
     :type effects: _Effect
-    :type store: dict[str, int]
+    :type store: Store
     """
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, store: Dict[str, int]  # , storeCapacity: int
-                 ) -> None:
+                 my: bool, owner: _Owner, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.store = store
-        # deprecated
-        # self.storeCapacity = storeCapacity
 
 
 # noinspection PyPep8Naming
@@ -634,17 +585,13 @@ class StructureTerminal(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner, cooldown: int, store: Dict[str, int]  # , storeCapacity: int
-                 ) -> None:
+                 my: bool, owner: _Owner, cooldown: int, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
         self.cooldown = cooldown
-        self.store = store  # type: Dict[str, int]
-        # deprecated
-        # self.storeCapacity = storeCapacity
+        self.store = store
 
     def send(self, resourceType: str, amount: Union[int, float], destination: str, description: str = None) -> int:
         pass
@@ -659,16 +606,11 @@ class StructureTower(OwnedStructure):
 
     def __init__(self, effects: _Effect, pos: RoomPosition, room: Room,
                  structureType: str, _id: str, hits: int, hitsMax: int,
-                 my: bool, owner: _Owner,  # energy: int, energyCapacity: int
-                 store: Store) -> None:
+                 my: bool, owner: _Owner, store: Store) -> None:
         """
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax, my, owner)
-        # self.effects = effects
-        # deprecated
-        # self.energy = energy
-        # self.energyCapacity = energyCapacity
         self.store = store
 
     def attack(self, target: Creep) -> int:
@@ -693,4 +635,3 @@ class StructureWall(Structure):
         WARNING: This constructor is purely for type completion, and does not exist in the game.
         """
         super().__init__(effects, pos, room, structureType, _id, hits, hitsMax)
-        # self.effects = effects

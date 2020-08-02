@@ -155,13 +155,13 @@ class Store:
     """
     WARNING: This constructor is purely for type completion, and does not exist in the game.
     """
-    def getCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+    def getCapacity(self, resource: str = None) -> Union[Dict[str, int], int]:
         pass
 
-    def getFreeCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+    def getFreeCapacity(self, resource: str = None) -> Union[Dict[str, int], int]:
         pass
 
-    def getUsedCapacity(self, resource: str) -> Optional[Dict[str, int]]:
+    def getUsedCapacity(self, resource: str = None) -> Union[Dict[str, int], int]:
         pass
 
 
