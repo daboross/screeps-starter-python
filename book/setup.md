@@ -7,17 +7,31 @@ transpile Python into JavaScript set up.
 The `./build.py` script does the majority of the work, from setting up a new environment to building/publishing the
 binary to the screeps server. However, you will need to install some dependencies:
 
-- `python-3` - Any decently modern version of Python 3 should work.
-- `pip` - Make sure you have a Python 3.* version of `pip` installed as well.
-- `npm` and `node` - Follow instructions at https://nodejs.org/en/download/
+- [`git`]. On Windows, this should come with "git bash"
+  which will be useful when executing commands below
+- [`python-3`] - Any decently modern version of Python 3 should work.
+- `pip` - This should come with most Python 3.* distributions, though if you've
+   installed using a Linux package manager you may need to manually install it.
+- [`node` and `npm`] - Follow instructions at https://nodejs.org/en/download/
 
-After you have those set up, you'll need to install `rollup`. This installs all
-dependencies listed in ./package.json into ./node_modules:
+Next, if you haven't already cloned this repository, you'll want to. Use a git
+gui if you have one, or:
+
+```
+git clone https://github.com/daboross/screeps-starter-python.git
+```
+
+Finally, you'll need to install remaining node dependencies into the project
+directory:
 
 ```
 cd screeps-starter-python
 npm install
 ```
+
+[`git`]: https://git-scm.com/
+[`python-3`]: https://www.python.org/downloads/
+[`node` and `npm`]: https://nodejs.org/en/download/
 
 Installing under Windows using 'conda'
 =====================================
@@ -69,4 +83,14 @@ Alternatively, you can use your username and password for authentication by remo
 Following that, you're all set up! `build.py` will automatically download and install the rest of the dependencies into
 a local environment when it is first run.
 
-All you need to do now is run `build.py` to compile, collect and deploy your code.
+To run `build.py` on a Unix system (Linux, MacOS), use:
+
+```
+python3 build.py
+```
+
+To run `build.py` on Windows with raw Python installed from python.org:
+
+```
+py build.py
+```
