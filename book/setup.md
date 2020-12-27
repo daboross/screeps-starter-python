@@ -8,7 +8,7 @@ The `./build.py` script does the majority of the work, from setting up a new env
 binary to the screeps server. However, you will need to install some dependencies:
 
 - `python-3` - Any decently modern version of Python 3 should work.
-- `pip` - Make sure you have a Python 3.* version of `pip` installed as well. While `pip-3.4` is fine, you do need at
+- `pip` - Make sure you have a Python 3.* version of `pip` installed as well.
 - `npm` and `node` - Follow instructions at https://nodejs.org/en/download/
 
 After you have those set up, you'll need to install `rollup`. This installs all
@@ -25,7 +25,7 @@ Installing under Windows using 'conda'
 For Windows users, running `build.py` may fail if `virtualenv` cannot be detected in your `PATH`.  The setup procedure here
 should only be used if the primary installation method at this top of this README does not work.
 
-This setup procedure uses `conda`, which is provided through the Python Version 3.6
+This setup procedure uses `conda`, which is provided through the Python Version 3.8
 [Miniconda installer](https://conda.io/miniconda.html)  If you already have something like
 [Anaconda](https://www.anaconda.com/what-is-anaconda/) on your system, you can skip this step.
 If you are new to `conda`, the [official quick start guide](https://conda.io/docs/user-guide/getting-started.html) does a
@@ -40,11 +40,9 @@ rest of the guide must be entered in the terminal created by `Anaconda Prompt`.
 
 Enter the following commands in the order listed:
 
-  1. `conda create -n screeps python=3.5`
+  1. `conda create -n screeps python=3.8`
   2. `activate screeps`
   3. `conda install git`
-  4. `conda install -c anaconda virtualenv` (TODO: this may no longer be
-     required)
 
 Once finished, you can now try `python build.py` again.
 
