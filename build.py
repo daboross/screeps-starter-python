@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import errno
 import json
+import os
 import subprocess
 import sys
 import urllib.parse
@@ -51,10 +52,17 @@ def possible_rollup_binary_paths(config):
         raise Exception("npm bin failed. exit code: {}. command line '{}'. stderr: {}. stdout: {}"
                         .format(ran_npm.returncode, "' '".join(args), ran_npm.stderr, ran_npm.stdout))
     npm_bin_dir = ran_npm.stdout.strip()
-    return [
-        os.path.join(npm_bin_dir, 'rollup'),
-        os.path.join(npm_bin_dir, 'rollup.exe'),
-    ]
+    # if we're running on Windows, then we need to explicitly use rollup.cmd or rollup.ps1 rather than rollup - rollup will still exist, it will just be an unexecutable shell file ._.
+    if os.name == 'nt':
+        return [
+            os.path.join(npm_bin_dir, 'rollup.cmd'),
+            os.path.join(npm_bin_dir, 'rollup.ps1'),
+            os.path.join(npm_bin_dir, 'rollup'),
+        ]
+    else:
+        return [
+            os.path.join(npm_bin_dir, 'rollup'),
+        ]
 
 
 def possible_pip_binary_paths(config):
@@ -142,7 +150,7 @@ class Configuration:
                 return path
         return None
 
-    def rollup_js_file(self):
+    def rollup_executable(self):
         """
         Utility method to find a rollup executable file.
 
@@ -196,7 +204,7 @@ def run_transcrypt(config):
     """
     transcrypt_executable = config.transcrypt_executable()
     if transcrypt_executable is None:
-        raise Exception("rollup not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+        raise Exception("transcrypt not found! tried paths: {}".format(possible_transcrypt_binary_paths(config)))
 
     source_main = os.path.join(config.source_dir, 'main.py')
 
@@ -231,15 +239,13 @@ def copy_artifacts(config):
         else:
             raise
 
-    rollup_js_file = config.rollup_js_file()
+    rollup_executable = config.rollup_executable()
     node_js = config.find_misc_executable('node')
-    if rollup_js_file is None:
+    if rollup_executable is None:
         raise Exception("rollup not found! tried paths: {}.\nDid you \
         remember to `npm install`?".format(possible_rollup_binary_paths(config)))
-    if node_js is None:
-        raise Exception("node not found! do you have node.js installed?")
     transcrypt_generated_main = os.path.join(config.source_dir, '__target__', 'main.js')
-    args = [node_js, rollup_js_file] + rollup_arguments + ['--input', transcrypt_generated_main]
+    args = [rollup_executable] + rollup_arguments + ['--input', transcrypt_generated_main]
 
     result = subprocess.run(args, cwd=config.source_dir, capture_output=True)
     print(result.stderr.decode('utf-8'), file=sys.stderr)
