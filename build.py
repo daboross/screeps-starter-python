@@ -40,7 +40,11 @@ def possible_rollup_binary_paths(config):
 
     :type config: Configuration
     """
-    args = ['npm', 'bin']
+    npm = config.npm_executable()
+    if npm is None:
+        raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+
+    args = [npm, 'bin']
     ran_npm = subprocess.run(args, capture_output=True, encoding='utf-8')
 
     if ran_npm.returncode != 0:
@@ -52,6 +56,18 @@ def possible_rollup_binary_paths(config):
         os.path.join(npm_bin_dir, 'rollup.exe'),
         shutil.which('rollup'),
         shutil.which('rollup.exe'),
+    ]
+
+
+def possible_npm_paths(config):
+    """
+    Finds all different places to look for a `npm` binary to run.
+
+    :type config: Configuration
+    """
+    return [
+        shutil.which('npm'),
+        shutil.which('npm.exe'),
     ]
 
 
@@ -120,6 +136,17 @@ class Configuration:
         :rtype: str
         """
         for path in possible_pip_binary_paths(self):
+            if path is not None and os.path.exists(path):
+                return path
+        return None
+
+    def npm_executable(self):
+        """
+        Utility method to find a npm executable file.
+
+        :rtype: str
+        """
+        for path in possible_npm_binary_paths(self):
             if path is not None and os.path.exists(path):
                 return path
         return None
