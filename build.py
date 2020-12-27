@@ -59,7 +59,7 @@ def possible_rollup_binary_paths(config):
     ]
 
 
-def possible_npm_paths(config):
+def possible_npm_binary_paths(config):
     """
     Finds all different places to look for a `npm` binary to run.
 
