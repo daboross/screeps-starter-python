@@ -49,7 +49,9 @@ def possible_rollup_binary_paths(config):
     npm_bin_dir = ran_npm.stdout.strip()
     return [
         os.path.join(npm_bin_dir, 'rollup'),
+        os.path.join(npm_bin_dir, 'rollup.exe'),
         shutil.which('rollup'),
+        shutil.which('rollup.exe'),
     ]
 
 
