@@ -1,5 +1,5 @@
-Installing under Linux and MacOS
-================================
+Installing Dependencies
+=======================
 
 This repository is intended as a base to be used for building more complex AIs, and has all the tooling needed to
 transpile Python into JavaScript set up.
@@ -33,8 +33,15 @@ npm install
 [`python-3`]: https://www.python.org/downloads/
 [`node` and `npm`]: https://nodejs.org/en/download/
 
+If this all works, proceed to [Post Installation
+Steps](#post-installation-steps).
+
 Installing under Windows using 'conda'
 =====================================
+
+This section was more necessary in a previous version of the project. If you
+can't get Python to work on Windows regularly, this might be helpful! Otherwise,
+skip this section and proceed to [Post Installation Steps](#post-installation-steps)
 
 For Windows users, running `build.py` may fail if `virtualenv` cannot be detected in your `PATH`.  The setup procedure here
 should only be used if the primary installation method at this top of this README does not work.
