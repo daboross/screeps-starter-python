@@ -17,6 +17,8 @@ transcrypt_arguments = ['-n', '-p', '.none']
 transcrypt_dirty_args = transcrypt_arguments + []
 transcrypt_clean_args = transcrypt_arguments + ['-b']
 
+rollup_arguments = ['--format', 'cjs']
+
 
 def possible_transcrypt_binary_paths(config):
     """
@@ -29,6 +31,25 @@ def possible_transcrypt_binary_paths(config):
         os.path.join(config.base_dir, 'env', 'Scripts', 'transcrypt.exe'),
         shutil.which('transcrypt'),
         shutil.which('transcrypt.exe'),
+    ]
+
+
+def possible_rollup_binary_paths(config):
+    """
+    Finds all different places to look for a `rollup` binary to run.
+
+    :type config: Configuration
+    """
+    args = ['npm', 'bin']
+    ran_npm = subprocess.run(args, capture_output=True, encoding='utf-8')
+
+    if ran_npm.returncode != 0:
+        raise Exception("npm bin failed. exit code: {}. command line '{}'. stderr: {}. stdout: {}"
+                        .format(ran_npm.returncode, "' '".join(args), ran_npm.stderr, ran_npm.stdout))
+    npm_bin_dir = ran_npm.stdout.strip()
+    return [
+        os.path.join(npm_bin_dir, 'rollup'),
+        shutil.which('rollup'),
     ]
 
 
@@ -97,6 +118,17 @@ class Configuration:
         :rtype: str
         """
         for path in possible_pip_binary_paths(self):
+            if path is not None and os.path.exists(path):
+                return path
+        return None
+
+    def rollup_executable(self):
+        """
+        Utility method to find a rollup executable file.
+
+        :rtype: str
+        """
+        for path in possible_rollup_binary_paths(self):
             if path is not None and os.path.exists(path):
                 return path
         return None
@@ -177,8 +209,19 @@ def copy_artifacts(config):
         else:
             raise
 
-    shutil.copyfile(os.path.join(config.source_dir, '__javascript__', 'main.js'),
-                    os.path.join(dist_directory, 'main.js'))
+    rollup_executable = config.rollup_executable()
+    transcrypt_generated_main = os.path.join(config.source_dir, '__target__', 'main.js')
+    args = [rollup_executable] + rollup_arguments + ['--input', transcrypt_generated_main]
+
+    result = subprocess.run(args, cwd=config.source_dir, capture_output=True)
+    print(result.stderr.decode('utf-8'), file=sys.stderr)
+
+    if result.returncode != 0:
+        raise Exception("rollup failed. exit code: {}. command line '{}'. working dir: '{}'."
+                        .format(result.returncode, "' '".join(args), config.source_dir))
+
+    with open(os.path.join(dist_directory, 'main.js'), 'wb') as f:
+        f.write(result.stdout)
 
     js_directory = os.path.join(config.base_dir, 'js_files')
 
