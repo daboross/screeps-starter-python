@@ -391,11 +391,39 @@ def install_env(config):
                 raise Exception("pip install failed. exit code: {}. command line '{}'. working dir: '{}'."
                                 .format(ret, "' '".join(install_args), config.base_dir))
 
+def install_node_dependencies(config):
+    """
+    Creates a virtualenv environment in the `env/` folder, and attempts to install `transcrypt` into it.
+
+    If `enter-env` is False in the `config.json` file, this will instead install `transcrypt`
+    into the default location for the `pip` binary which is in the path.
+
+    :type config: Configuration
+    """
+    if config.rollup_executable() is not None:
+        return
+    node_modules = os.path.join(config.base_dir, "node_modules")
+    if os.path.exists(node_modules):
+        raise Exception("node_modules exists, but still can't find rollup! Have you used `npm install` to install dependencies?")
+    npm = config.find_misc_executable('npm')
+    if npm is None:
+        raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+
+    install_args = [npm, "install"]
+
+    ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
+
+    if ret != 0:
+        raise Exception("npm install failed. exit code: {}. command line '{}'. working dir: '{}'."
+                        .format(ret, "' '".join(install_args), config.base_dir))
+
+
 
 def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     config = load_config(base_dir)
     install_env(config)
+    install_node_dependencies(config)
 
     if config.flatten:
         expander_control = file_expander.FileExpander(base_dir)

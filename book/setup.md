@@ -21,14 +21,6 @@ gui if you have one, or:
 git clone https://github.com/daboross/screeps-starter-python.git
 ```
 
-Finally, you'll need to install remaining node dependencies into the project
-directory:
-
-```
-cd screeps-starter-python
-npm install
-```
-
 [`git`]: https://git-scm.com/
 [`python-3`]: https://www.python.org/downloads/
 [`node` and `npm`]: https://nodejs.org/en/download/
