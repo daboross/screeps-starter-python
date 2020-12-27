@@ -40,7 +40,7 @@ def possible_rollup_binary_paths(config):
 
     :type config: Configuration
     """
-    npm = config.npm_executable()
+    npm = config.find_misc_executable('npm')
     if npm is None:
         raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
 
@@ -54,20 +54,6 @@ def possible_rollup_binary_paths(config):
     return [
         os.path.join(npm_bin_dir, 'rollup'),
         os.path.join(npm_bin_dir, 'rollup.exe'),
-        shutil.which('rollup'),
-        shutil.which('rollup.exe'),
-    ]
-
-
-def possible_npm_binary_paths(config):
-    """
-    Finds all different places to look for a `npm` binary to run.
-
-    :type config: Configuration
-    """
-    return [
-        shutil.which('npm'),
-        shutil.which('npm.exe'),
     ]
 
 
@@ -140,18 +126,23 @@ class Configuration:
                 return path
         return None
 
-    def npm_executable(self):
+    def find_misc_executable(self, file_base):
         """
-        Utility method to find a npm executable file.
+        Utility method to find a misc. executable file. Tries the basename and basename + '.exe' for Windows.
 
+        :type file_base: str
         :rtype: str
         """
-        for path in possible_npm_binary_paths(self):
+        possible_paths = [
+            shutil.which(file_base),
+            shutil.which(file_base + '.exe'),
+        ]
+        for path in possible_paths:
             if path is not None and os.path.exists(path):
                 return path
         return None
 
-    def rollup_executable(self):
+    def rollup_js_file(self):
         """
         Utility method to find a rollup executable file.
 
@@ -240,11 +231,15 @@ def copy_artifacts(config):
         else:
             raise
 
-    rollup_executable = config.rollup_executable()
-    if rollup_executable is None:
-        raise Exception("rollup not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+    rollup_js_file = config.rollup_js_file()
+    node_js = config.find_misc_executable('node')
+    if rollup_js_file is None:
+        raise Exception("rollup not found! tried paths: {}.\nDid you \
+        remember to `npm install`?".format(possible_rollup_binary_paths(config)))
+    if node_js is None:
+        raise Exception("node not found! do you have node.js installed?")
     transcrypt_generated_main = os.path.join(config.source_dir, '__target__', 'main.js')
-    args = [rollup_executable] + rollup_arguments + ['--input', transcrypt_generated_main]
+    args = [node_js, rollup_js_file] + rollup_arguments + ['--input', transcrypt_generated_main]
 
     result = subprocess.run(args, cwd=config.source_dir, capture_output=True)
     print(result.stderr.decode('utf-8'), file=sys.stderr)
