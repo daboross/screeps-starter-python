@@ -2,7 +2,6 @@
 
 ## Overview
 
-* [Screeps Starter Python](README.md)
 * [Setup](setup.md)
 * [Upgrading Transcrypt](upgrading-transcrypt.md)
 
