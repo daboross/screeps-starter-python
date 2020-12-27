@@ -11,15 +11,8 @@ binary to the screeps server. However, you will need to install some dependencie
 - `pip` - Make sure you have a Python 3.* version of `pip` installed as well. While `pip-3.4` is fine, you do need at
 - `npm` and `node` - Follow instructions at https://nodejs.org/en/download/
 
-After you have those set up, you'll need to install `virtualenv` and `rollup`:
-
-To install virtualenv, use `pip` (or another `pip3*` / `pip-3*` command) as follows:
-
-```
-pip install --user virtualenv
-```
-
-To install `rollup`, use `npm install` inside the project directory:
+After you have those set up, you'll need to install `rollup`. This installs all
+dependencies listed in ./package.json into ./node_modules:
 
 ```
 cd screeps-starter-python
@@ -50,7 +43,8 @@ Enter the following commands in the order listed:
   1. `conda create -n screeps python=3.5`
   2. `activate screeps`
   3. `conda install git`
-  4. `conda install -c anaconda virtualenv`
+  4. `conda install -c anaconda virtualenv` (TODO: this may no longer be
+     required)
 
 Once finished, you can now try `python build.py` again.
 

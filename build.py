@@ -297,7 +297,7 @@ def upload(config):
 
 def install_env(config):
     """
-    Creates a virtualenv environment in the `env/` folder, and attempts to install `transcrypt` into it.
+    Creates a venv environment in the `env/` folder, and attempts to install `transcrypt` into it.
 
     If `enter-env` is False in the `config.json` file, this will instead install `transcrypt`
     into the default location for the `pip` binary which is in the path.
@@ -310,16 +310,13 @@ def install_env(config):
         env_dir = os.path.join(config.base_dir, 'env')
 
         if not os.path.exists(env_dir):
-            print("creating virtualenv environment...")
-            if sys.version_info >= (3, 5):
-                args = ['virtualenv', '--system-site-packages', env_dir]
-            else:
-                args = ['virtualenv', '-p', 'python3.5', '--system-site-packages', env_dir]
+            print("creating venv environment...")
+            args = ['python', '-m', 'venv', '--system-site-packages', env_dir]
 
             ret = subprocess.Popen(args, cwd=config.base_dir).wait()
 
             if ret != 0:
-                raise Exception("virtualenv failed. exit code: {}. command line '{}'. working dir: '{}'."
+                raise Exception("venv failed. exit code: {}. command line '{}'. working dir: '{}'."
                                 .format(ret, "' '".join(args), config.base_dir))
 
         if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')) and not os.path.exists(
