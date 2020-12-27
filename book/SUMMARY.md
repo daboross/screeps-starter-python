@@ -1,6 +1,6 @@
 # Summary
 
-## Overview
+## Logistics
 
 * [Setup](setup.md)
 * [Upgrading Transcrypt](upgrading-transcrypt.md)

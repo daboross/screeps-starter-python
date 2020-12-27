@@ -28,7 +28,7 @@ and has all the tooling needed to transpile Python into JavaScript set up.
 ## Install
 
 To get started, check out the [Setup
-Guide](https://daboross.gitbook.io/screeps-starter-python/overview/setup).
+Guide](https://daboross.gitbook.io/screeps-starter-python/logistics/setup).
 
 ## Docs
 
@@ -49,4 +49,4 @@ up with the first link first :).
 [slack-url]: https://chat.screeps.com/
 
 [docs-badge]: https://img.shields.io/badge/docs-built-blue
-[docs-url]: https://daboross.gitbook.io/screeps-starter-python/overview/setup
+[docs-url]: https://daboross.gitbook.io/screeps-starter-python/logistics/setup
