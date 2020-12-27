@@ -7,18 +7,23 @@ transpile Python into JavaScript set up.
 The `./build.py` script does the majority of the work, from setting up a new environment to building/publishing the
 binary to the screeps server. However, you will need to install some dependencies:
 
-- `python-3.5` - Transcrypt works natively with Python 3.5, so you will need this version installed. Python 3.4 is more
-  widely available, but will not work for our purposes.
+- `python-3` - Any decently modern version of Python 3 should work.
 - `pip` - Make sure you have a Python 3.* version of `pip` installed as well. While `pip-3.4` is fine, you do need at
-  least that in order to make a `python-3.5` virtualenv. You can check your pip version with `pip --version`, and
-  depending on how it was installed, you may need to use `pip3`, `pip-3`, `pip3.4` or `pip-3.4` instead.
+- `npm` and `node` - Follow instructions at https://nodejs.org/en/download/
 
-After you have those set up, you'll need to install `virtualenv`:
+After you have those set up, you'll need to install `virtualenv` and `rollup`:
 
 To install virtualenv, use `pip` (or another `pip3*` / `pip-3*` command) as follows:
 
 ```
 pip install --user virtualenv
+```
+
+To install `rollup`, use `npm install` inside the project directory:
+
+```
+cd screeps-starter-python
+npm install
 ```
 
 Installing under Windows using 'conda'
