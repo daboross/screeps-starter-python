@@ -177,6 +177,8 @@ def run_transcrypt(config):
     :type config: Configuration
     """
     transcrypt_executable = config.transcrypt_executable()
+    if transcrypt_executable is None:
+        raise Exception("rollup not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
 
     source_main = os.path.join(config.source_dir, 'main.py')
 
@@ -212,6 +214,8 @@ def copy_artifacts(config):
             raise
 
     rollup_executable = config.rollup_executable()
+    if rollup_executable is None:
+        raise Exception("rollup not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
     transcrypt_generated_main = os.path.join(config.source_dir, '__target__', 'main.js')
     args = [rollup_executable] + rollup_arguments + ['--input', transcrypt_generated_main]
 
