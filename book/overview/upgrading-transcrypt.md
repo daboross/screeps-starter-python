@@ -1,5 +1,4 @@
-Upgrading screeps-transcrypt
-============================
+# Upgrading Transcrypt
 
 Transcrypt occasionally updates! To provide better compilations, or to provide other fixes.
 
@@ -12,3 +11,4 @@ If you've already got the new `requirements.txt`, simply delete `env/` and re-ru
 ```
 
 I believe this steps will work for both Unix and Windows users, though they have only been tested on Linux so far.
+
