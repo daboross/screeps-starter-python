@@ -8,6 +8,7 @@
 __pycache__/
 *.py[cod]
 __javascript__/
+__target__/
 target/
 
 # Git #
@@ -102,6 +103,9 @@ __py_build__/
 docs/_build/
 *\ Notes.txt
 .mypy_cache
+# it's recommended that we check this in, but with how infrequently this project is updated,
+# that would cause everyone to end up with an extremely outdated rollup.
+package-lock.json
 
 # Unit test / coverage reports #
 ################################
