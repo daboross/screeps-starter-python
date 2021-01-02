@@ -1,5 +1,3 @@
-# dict Iteration
-
 ## Transcrypt vs. Python: iterating dicts
 
 In Python, dictionaries are a special case - they have a different class than Object which allows for `[]` access to values, and iteration methods like `.keys()`, `.values()` and `.items()`.
@@ -10,7 +8,7 @@ While this is good for performance, it's not great for pythonic code. `.keys()`,
 
 Instead, there are two possibilities:
 
-## 1\) manually force things to be dictionaries
+## 1) manually force things to be dictionaries
 
 `dict()` method does exist, and will turn a regular object into a dictionary with right methods.
 
@@ -20,13 +18,13 @@ my_stuff = dict({
 })
 ```
 
-## 2\) use JS-style or lodash access
+## 2) use JS-style or lodash access
 
 In JavaScript, lodash methods are often used for object iteration.
 
 Instead of:
 
-```python
+```py
 for key, value in obj.items():
     print(key, value)
 for key in obj.keys():
@@ -37,7 +35,7 @@ for value in obj.values():
 
 You can use:
 
-```python
+```py
 for key, value in _.pairs(obj):
     print(key, value)
 for key in Object.keys(obj): # or _.keys(obj)
@@ -45,4 +43,3 @@ for key in Object.keys(obj): # or _.keys(obj)
 for value in Object.values(obj): # or _.values(obj)
     print(value)
 ```
-

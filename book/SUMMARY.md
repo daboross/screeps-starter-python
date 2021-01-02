@@ -1,22 +1,21 @@
-# Table of contents
+# Summary
 
-* [Introduction](README.md)
+## Overview
 
-## Setup <a id="overview"></a>
-
-* [Setup](overview/setup.md)
-* [Upgrading Transcrypt](overview/upgrading-transcrypt.md)
+* [Screeps Starter Python](README.md)
+* [Setup](setup.md)
+* [Upgrading Transcrypt](upgrading-transcrypt.md)
 
 ## Screeps API Usage
 
-* [Constants](screeps-api-usage/constants.md)
-* [Optional Arguments](screeps-api-usage/optional-arguments.md)
-* [Objects - Basic Interaction](screeps-api-usage/objects.md)
-* [Objects - Creation and the Keyword "new"](screeps-api-usage/constructors.md)
+* [Constants](constants.md)
+* [Optional Arguments ](optional-arguments.md)
+* [Objects - Basic Interaction](objects.md)
+* [Objects - Creation and the Keyword "new"](constructors.md)
 
 ## Features
 
-* [Console Commands](features/console-commands.md)
+* [Console Commands](console-commands.md)
 
 ## Lodash
 
@@ -26,8 +25,7 @@
 ## Syntax Changes
 
 * [Summary](syntax-changes/index.md)
-* [in Opperator](syntax-changes/in-operator.md)
+* [`in` Opperator](syntax-changes/in-operator.md)
 * [List Behavior](syntax-changes/lists.md)
-* [del Operator](syntax-changes/del-operator-overload.md)
-* [dict Iteration](syntax-changes/object-iteration.md)
-
+* [`del` Operator](syntax-changes/del-operator-overload.md)
+* [`dict` Iteration](syntax-changes/object-iteration.md)
