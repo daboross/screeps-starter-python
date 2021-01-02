@@ -1,0 +1,22 @@
+{
+  "name": "screeps-starter-python",
+  "version": "0.0.1",
+  "description": "screeps-starter-python ==========",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daboross/screeps-starter-python.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daboross/screeps-starter-python/issues"
+  },
+  "homepage": "https://github.com/daboross/screeps-starter-python#readme",
+  "devDependencies": {
+    "rollup": "^2.35.1"
+  }
+}

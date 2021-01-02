@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import errno
 import json
+import os
 import subprocess
 import sys
 import urllib.parse
@@ -17,6 +18,8 @@ transcrypt_arguments = ['-n', '-p', '.none']
 transcrypt_dirty_args = transcrypt_arguments + []
 transcrypt_clean_args = transcrypt_arguments + ['-b']
 
+rollup_arguments = ['--format', 'cjs']
+
 
 def possible_transcrypt_binary_paths(config):
     """
@@ -30,6 +33,36 @@ def possible_transcrypt_binary_paths(config):
         shutil.which('transcrypt'),
         shutil.which('transcrypt.exe'),
     ]
+
+
+def possible_rollup_binary_paths(config):
+    """
+    Finds all different places to look for a `rollup` binary to run.
+
+    :type config: Configuration
+    """
+    npm = config.find_misc_executable('npm')
+    if npm is None:
+        raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+
+    args = [npm, 'bin']
+    ran_npm = subprocess.run(args, capture_output=True, encoding='utf-8')
+
+    if ran_npm.returncode != 0:
+        raise Exception("npm bin failed. exit code: {}. command line '{}'. stderr: {}. stdout: {}"
+                        .format(ran_npm.returncode, "' '".join(args), ran_npm.stderr, ran_npm.stdout))
+    npm_bin_dir = ran_npm.stdout.strip()
+    # if we're running on Windows, then we need to explicitly use rollup.cmd or rollup.ps1 rather than rollup - rollup will still exist, it will just be an unexecutable shell file ._.
+    if os.name == 'nt':
+        return [
+            os.path.join(npm_bin_dir, 'rollup.cmd'),
+            os.path.join(npm_bin_dir, 'rollup.ps1'),
+            os.path.join(npm_bin_dir, 'rollup'),
+        ]
+    else:
+        return [
+            os.path.join(npm_bin_dir, 'rollup'),
+        ]
 
 
 def possible_pip_binary_paths(config):
@@ -101,6 +134,33 @@ class Configuration:
                 return path
         return None
 
+    def find_misc_executable(self, file_base):
+        """
+        Utility method to find a misc. executable file. Tries the basename and basename + '.exe' for Windows.
+
+        :type file_base: str
+        :rtype: str
+        """
+        possible_paths = [
+            shutil.which(file_base),
+            shutil.which(file_base + '.exe'),
+        ]
+        for path in possible_paths:
+            if path is not None and os.path.exists(path):
+                return path
+        return None
+
+    def rollup_executable(self):
+        """
+        Utility method to find a rollup executable file.
+
+        :rtype: str
+        """
+        for path in possible_rollup_binary_paths(self):
+            if path is not None and os.path.exists(path):
+                return path
+        return None
+
     @property
     def source_dir(self):
         """:rtype: str"""
@@ -143,6 +203,8 @@ def run_transcrypt(config):
     :type config: Configuration
     """
     transcrypt_executable = config.transcrypt_executable()
+    if transcrypt_executable is None:
+        raise Exception("transcrypt not found! tried paths: {}".format(possible_transcrypt_binary_paths(config)))
 
     source_main = os.path.join(config.source_dir, 'main.py')
 
@@ -177,8 +239,23 @@ def copy_artifacts(config):
         else:
             raise
 
-    shutil.copyfile(os.path.join(config.source_dir, '__javascript__', 'main.js'),
-                    os.path.join(dist_directory, 'main.js'))
+    rollup_executable = config.rollup_executable()
+    node_js = config.find_misc_executable('node')
+    if rollup_executable is None:
+        raise Exception("rollup not found! tried paths: {}.\nDid you \
+        remember to `npm install`?".format(possible_rollup_binary_paths(config)))
+    transcrypt_generated_main = os.path.join(config.source_dir, '__target__', 'main.js')
+    args = [rollup_executable] + rollup_arguments + ['--input', transcrypt_generated_main]
+
+    result = subprocess.run(args, cwd=config.source_dir, capture_output=True)
+    print(result.stderr.decode('utf-8'), file=sys.stderr)
+
+    if result.returncode != 0:
+        raise Exception("rollup failed. exit code: {}. command line '{}'. working dir: '{}'."
+                        .format(result.returncode, "' '".join(args), config.source_dir))
+
+    with open(os.path.join(dist_directory, 'main.js'), 'wb') as f:
+        f.write(result.stdout)
 
     js_directory = os.path.join(config.base_dir, 'js_files')
 
@@ -254,7 +331,7 @@ def upload(config):
 
 def install_env(config):
     """
-    Creates a virtualenv environment in the `env/` folder, and attempts to install `transcrypt` into it.
+    Creates a venv environment in the `env/` folder, and attempts to install `transcrypt` into it.
 
     If `enter-env` is False in the `config.json` file, this will instead install `transcrypt`
     into the default location for the `pip` binary which is in the path.
@@ -267,16 +344,13 @@ def install_env(config):
         env_dir = os.path.join(config.base_dir, 'env')
 
         if not os.path.exists(env_dir):
-            print("creating virtualenv environment...")
-            if sys.version_info >= (3, 5):
-                args = ['virtualenv', '--system-site-packages', env_dir]
-            else:
-                args = ['virtualenv', '-p', 'python3.5', '--system-site-packages', env_dir]
+            print("creating venv environment...")
+            args = ['python', '-m', 'venv', '--system-site-packages', env_dir]
 
             ret = subprocess.Popen(args, cwd=config.base_dir).wait()
 
             if ret != 0:
-                raise Exception("virtualenv failed. exit code: {}. command line '{}'. working dir: '{}'."
+                raise Exception("venv failed. exit code: {}. command line '{}'. working dir: '{}'."
                                 .format(ret, "' '".join(args), config.base_dir))
 
         if not os.path.exists(os.path.join(env_dir, 'bin', 'transcrypt')) and not os.path.exists(
@@ -317,11 +391,39 @@ def install_env(config):
                 raise Exception("pip install failed. exit code: {}. command line '{}'. working dir: '{}'."
                                 .format(ret, "' '".join(install_args), config.base_dir))
 
+def install_node_dependencies(config):
+    """
+    Creates a virtualenv environment in the `env/` folder, and attempts to install `transcrypt` into it.
+
+    If `enter-env` is False in the `config.json` file, this will instead install `transcrypt`
+    into the default location for the `pip` binary which is in the path.
+
+    :type config: Configuration
+    """
+    if config.rollup_executable() is not None:
+        return
+    node_modules = os.path.join(config.base_dir, "node_modules")
+    if os.path.exists(node_modules):
+        raise Exception("node_modules exists, but still can't find rollup! Have you used `npm install` to install dependencies?")
+    npm = config.find_misc_executable('npm')
+    if npm is None:
+        raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+
+    install_args = [npm, "install"]
+
+    ret = subprocess.Popen(install_args, cwd=config.base_dir).wait()
+
+    if ret != 0:
+        raise Exception("npm install failed. exit code: {}. command line '{}'. working dir: '{}'."
+                        .format(ret, "' '".join(install_args), config.base_dir))
+
+
 
 def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     config = load_config(base_dir)
     install_env(config)
+    install_node_dependencies(config)
 
     if config.flatten:
         expander_control = file_expander.FileExpander(base_dir)
