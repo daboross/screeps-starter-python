@@ -40,7 +40,7 @@ Default options should again be fine.
 Start "git bash" to start a terminal for the next step.
 
 [`git`]: https://git-scm.com/
-[`python-3`]: https://www.python.org/downloads/
+[`python`]: https://www.python.org/downloads/
 [`node.js`]: https://nodejs.org/en/download/
 [homebrew]: https://brew.sh/
 
