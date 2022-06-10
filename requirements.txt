@@ -1,1 +1,1 @@
-git+git://github.com/daboross/Transcrypt.git@screeps-transcrypt-0.3.3#egg=transcrypt
+git+https://github.com/daboross/Transcrypt.git@screeps-transcrypt-0.3.3#egg=transcrypt
