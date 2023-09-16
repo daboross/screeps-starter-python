@@ -10,8 +10,8 @@ base software installed:
 
 - [`git`]
 - [`python`] version 3.7 or above
-- [`node.js`]
-- `npm`
+- [`node.js`] version 17.x.x or older
+- `npm` version 8.x.x or older
 
 
 ### Linux Software Install
